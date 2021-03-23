@@ -116,13 +116,19 @@ function Doc({ id, font, length=10000, isCalc }) {
       //     `<Tooltip title="${res.result[i].word}:${res.result[i].nature}" color={colorCfg[0]}>
       //   <Text underline>${res.result[i].word}</Text>
       // </Tooltip>`)
-        let gstr = `<font color=${colorCfg[data.result[i].color].value}
+        const gstr = `<font color=${colorCfg[data.result[i].color].value}
           title="${data.result[i].word}:${nmap[data.result[i].nature] || data.result[i].nature} ${data.result[i].count}">${data.result[i].word}</font>`
-        if(data.result[i].is_underline){
-          gstr = `<font color=${colorCfg[data.result[i].color].value}
+
+        const gstr2 = `<font color=${colorCfg[data.result[i].color].value}
           title="${data.result[i].word}:${nmap[data.result[i].nature] || data.result[i].nature} ${data.result[i].count}"><u style='text-underline-offset: ${font*0.4}px'>${data.result[i].word}</u></font>`
+
+        // 如果是连词，替换首先判断是否前面是[།་],如果是就不加下划线
+        if(['འི','འུ','འོ'].indexOf(data.result[i].word) > -1){
+          showStr = showStr.replace(new RegExp(`(?<![།་])\\[${data.result[i].id}\\]`, 'g'), gstr2)
+          showStr = showStr.replace(new RegExp(`\\[${data.result[i].id}\\]`, 'g'), gstr)
+        }else{
+          showStr = showStr.replace(new RegExp(`\\[${data.result[i].id}\\]`, 'g'), gstr)
         }
-        showStr = showStr.replace(new RegExp(`\\[${data.result[i].id}\\]`, 'g'), gstr)
       }
     }else{
       const len = data.result.length;

@@ -302,7 +302,7 @@ export default function CalcResult(props) {
 
         </Row>
         <div className="fontpagination">
-          <Pagination showSizeChanger={false} defaultCurrent={1} pageSize={pageInfo.pageSize} total={pageInfo.total} current={pageInfo.current} onChange={onChange} />
+          <Pagination showTotal={(total) => `${getLocaleDesc('count_all')}: ${total}`} showSizeChanger={false} defaultCurrent={1} pageSize={pageInfo.pageSize} total={pageInfo.total} current={pageInfo.current} onChange={onChange} />
         </div>
       </div>
     </>

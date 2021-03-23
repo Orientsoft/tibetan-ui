@@ -18,14 +18,13 @@ import {
   Layout,
   Table, Space, message, Typography
 } from 'antd';
-import { DownOutlined, FormOutlined, DeleteOutlined, FolderOutlined, FolderOpenOutlined, FireOutlined } from '@ant-design/icons';
+import { FormOutlined, ProfileOutlined, FolderOutlined, CloudDownloadOutlined,CloudTwoTone, FireOutlined } from '@ant-design/icons';
 import { useAntdTable } from 'ahooks';
 import Uploadbutton from '@/components/UploadFileButton';
 import UploadMultibutton from '@/components/UploadMultiFileButton';
 import Confirm from '@/components/Confirm';
 import { getLocaleDesc } from '@/utils/common';
-import AddTags from './addTags';
-import InfoButton from './editInfo';
+import AddTags from '../Files/addTags';
 
 const { Sider, Content } = Layout;
 const { DirectoryTree } = Tree;
@@ -47,6 +46,9 @@ export default function FileManage() {
       title: getLocaleDesc('file_search'),
       dataIndex: 'file_name',
       key: 'file_name',
+      render:(value,record)=>{
+        return <span onClick={()=>onEdit(record)}>{value}</span>
+      }
     },
     {
       title: getLocaleDesc('book_name'),
@@ -69,7 +71,7 @@ export default function FileManage() {
       key: 'tags',
       width: '200px',
       render:(value,record,index) => {
-        return <AddTags uid={record.id} tags={value} onChange={onTagsChange} />
+        return <AddTags uid={record.id} type='split' tags={value} onChange={onTagsChange} />
       }
     },
     // {
@@ -192,22 +194,6 @@ export default function FileManage() {
 
   const columns = [
     ...baseClumn,
-    {
-      title: getLocaleDesc('action'),
-      dataIndex: 'nam4',
-      key: 'nam4',
-      render: (text, record) => {
-        return (
-          <Space>
-            <InfoButton uid={record.id} />
-            {/*
-            <Button icon={<FormOutlined />} onClick={()=>onEdit(record)} /> */}
-            <Button onClick={()=>onDel(record)}>{getLocaleDesc('button_delete')}</Button>
-
-          </Space>
-        );
-      },
-    },
   ];
 
   const getMyFiles = (search) =>{
@@ -256,7 +242,7 @@ export default function FileManage() {
   };
 
   const onEdit = (record)=>{
-    window.open(`#/edit?id=${record.id}`,'__blank')
+    window.open(`#/edit?id=${record.id}`,'_blank')
   }
 
   let isActive= true
@@ -323,14 +309,17 @@ export default function FileManage() {
                   />
                 </Form.Item>
                 <Form.Item>
-                  <Uploadbutton url='/api/file' onSuccess={()=>getMyFiles()} prefix={selData} text={getLocaleDesc('upload_file')}/>
+                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<ProfileOutlined />} >{getLocaleDesc('auto_split')}</Button>
                 </Form.Item>
                 <Form.Item>
-                  <Uploadbutton url='/api/file' onSuccess={getMyTree} isDir prefix={selData} text={getLocaleDesc('upload_files')}/>
-                </Form.Item>
-                {/* <Form.Item>
                   <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
-                </Form.Item> */}
+                </Form.Item>
+                <Form.Item>
+                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<CloudTwoTone />} >{getLocaleDesc('export_new')}</Button>
+                </Form.Item>
+                <Form.Item>
+                  <Button loading={loading2} onClick={onCheck} icon={<CloudDownloadOutlined />} >{getLocaleDesc('export_all')}</Button>
+                </Form.Item>
               </Form>
             </Col>
           </Row>

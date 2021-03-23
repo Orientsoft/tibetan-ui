@@ -40,7 +40,7 @@ export default{
 
   //filemanege
   file_search:'ཡིག་ཆའི་མིང་།',
-  file_list_title:'ངའི་ཡིག་ཆའི་མཛོད།',
+  file_list_title:'ངའི་ཡིག་མཛོད།',
   file_select_info:'ཡིག་ཆ་འདེམས་རོགས།',
   file_delete_title:'ཉེན་བརྡ།',
   file_delete_info:'ཡིག་ཆ་གསུབ་གཏན་འཁེལ་ལམ།',
@@ -136,7 +136,10 @@ export default{
   none:'མེད།',
   no_auth:'ཁྱོད་ལ་དབང་ཚད་མེད།',
   word_search: 'སྐད་རྒྱུ་འཚོལ་ཞིབ།',
-  
+
   word_error:'ཡིག་ཚགས་ཚད་ལྡན་མ་རེད།',
-  please_view_doc:'མ་ཡིག་ལ་ལྟ་བཤེར་མཛོད།'
+  please_view_doc:'མ་ཡིག་ལ་ལྟ་བཤེར་མཛོད།',
+
+  tab_calc_all:'ཚིག་བཟློས་སྡོམས་རྩིས་ཕྱོགས་བསྡུས།',
+  calc_all:'ཕྱོགས་བསྡུས།',
 }

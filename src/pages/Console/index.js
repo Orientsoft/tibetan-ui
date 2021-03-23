@@ -23,19 +23,20 @@ export default function Console() {
             <Menu.Item key="k2">
               {getLocaleDesc('console_tab_existword')}
             </Menu.Item>
-            <Menu.Item key="k3">
-              {getLocaleDesc('console_tab_user')}
-            </Menu.Item>
-            <Menu.Item key="k4">
+            {/*<Menu.Item key="k3">
               {getLocaleDesc('console_tab_word_index')}
+            </Menu.Item>
+            */}
+            <Menu.Item key="k4">
+              {getLocaleDesc('console_tab_user')}
             </Menu.Item>
           </Menu>
         </Sider>
         <Content className=" pt-20 p-lr-10 consolebox">
           {current === 'k1' && <WordHandle type="stat" wtitle={getLocaleDesc('console_tab_word')}  />}
           {current === 'k2' && <WordHandle type="used" wtitle={getLocaleDesc('console_tab_existword')}  />}
-          {current === 'k3' && <UserManage />}
-          {current === 'k4' && <WordHandle type="word" wtitle={getLocaleDesc('console_tab_word_index')}  />}
+          {current === 'k3' && <WordHandle type="word" wtitle={getLocaleDesc('console_tab_word_index')}  />}
+          {current === 'k4' && <UserManage />}
         </Content>
       </Layout>
     </>

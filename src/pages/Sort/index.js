@@ -24,8 +24,7 @@ import Uploadbutton from '@/components/UploadFileButton';
 import UploadMultibutton from '@/components/UploadMultiFileButton';
 import Confirm from '@/components/Confirm';
 import { getLocaleDesc } from '@/utils/common';
-import AddTags from './addTags';
-import InfoButton from './editInfo';
+import AddTags from '../Files/addTags';
 
 const { Sider, Content } = Layout;
 const { DirectoryTree } = Tree;
@@ -69,7 +68,7 @@ export default function FileManage() {
       key: 'tags',
       width: '200px',
       render:(value,record,index) => {
-        return <AddTags uid={record.id} tags={value} onChange={onTagsChange} />
+        return <AddTags uid={record.id} type='split' tags={value} onChange={onTagsChange} />
       }
     },
     // {
@@ -192,22 +191,6 @@ export default function FileManage() {
 
   const columns = [
     ...baseClumn,
-    {
-      title: getLocaleDesc('action'),
-      dataIndex: 'nam4',
-      key: 'nam4',
-      render: (text, record) => {
-        return (
-          <Space>
-            <InfoButton uid={record.id} />
-            {/*
-            <Button icon={<FormOutlined />} onClick={()=>onEdit(record)} /> */}
-            <Button onClick={()=>onDel(record)}>{getLocaleDesc('button_delete')}</Button>
-
-          </Space>
-        );
-      },
-    },
   ];
 
   const getMyFiles = (search) =>{
@@ -323,10 +306,10 @@ export default function FileManage() {
                   />
                 </Form.Item>
                 <Form.Item>
-                  <Uploadbutton url='/api/file' onSuccess={()=>getMyFiles()} prefix={selData} text={getLocaleDesc('upload_file')}/>
+                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
                 </Form.Item>
                 <Form.Item>
-                  <Uploadbutton url='/api/file' onSuccess={getMyTree} isDir prefix={selData} text={getLocaleDesc('upload_files')}/>
+                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
                 </Form.Item>
                 {/* <Form.Item>
                   <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>

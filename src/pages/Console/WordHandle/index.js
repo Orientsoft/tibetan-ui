@@ -218,7 +218,7 @@ export default function WordHandle({ type, wtitle }) {
         ))}
       </Row>
 
-      <Pagination className="mb-10 text-center" hideOnSinglePage {...tableProps.pagination} onChange={onChangePagi} showSizeChanger={false} />
+      <Pagination showTotal={(total) => `${getLocaleDesc('count_all')}: ${total}`} className="mb-10 text-center" hideOnSinglePage {...tableProps.pagination} onChange={onChangePagi} showSizeChanger={false} />
 
       <EditWord
         editKey={selRecord.id}

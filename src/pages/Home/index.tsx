@@ -180,7 +180,7 @@ export default function Home() {
               {
                 l === 'bo-cn'?
                 <h1 className="pt-40 text-center">
-                  <img height="120px" src="images/home-h1.png" alt="" />
+                  <img height="90px" src="images/home-h2.png" alt="" />
                 </h1>
                 :
                 <h1 className="pt-40 text-center">{getLocaleDesc('home_title')}</h1>

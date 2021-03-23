@@ -11,7 +11,7 @@ const layout = {
 const tailLayout = {
   wrapperCol: { offset: 4, span: 20 },
 };
-export default function AddTags({ uid,tags, onChange }) {
+export default function AddTags({ uid,tags, onChange, type='files' }) {
   const [visible, sv] = useState(false);
   const onCancel = () => {
     sv(false);
@@ -25,23 +25,23 @@ export default function AddTags({ uid,tags, onChange }) {
     if(e){
       return
     }
-    
+
     const t = [...tags, values.tag]
     onChange(t,uid)
     onCancel()
   };
-  
+
   return (
     <>
       <div className="tag-div">
         {tags.map((v,i)=>(<span className="tag" key={i}>
           {v}
-          <CloseOutlined className='tag-del' onClick={()=>doDel(v)} />
+          {type==='files'&&<CloseOutlined className='tag-del' onClick={()=>doDel(v)} />}
         </span>))}
 
-        <PlusCircleOutlined className="addtag" onClick={() => {
+        {type==='files'&&<PlusCircleOutlined className="addtag" onClick={() => {
           sv(true);
-        }} />
+        }} />}
       </div>
 
       <Modal title={getLocaleDesc('button_add')} visible={visible} footer={null} onCancel={onCancel}>

@@ -145,7 +145,9 @@ export default{
 
   tab_split:'辅助分词',
   tab_sort:'藏语排序',
-  console_tab_word_index:'藏文索引库',
+  console_tab_word_index:'藏文索引库管理',
   word_index:'索引',
   word_word:'字',
+  export_new:'导出新词',
+  export_all:'导出全部',
 }

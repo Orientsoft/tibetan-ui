@@ -46,20 +46,29 @@ export default function AddWord({ onAdd, type }) {
             <Input />
           </Form.Item>
 
-          <Form.Item
+          {type !== 'word' && <Form.Item
             label={getLocaleDesc('word_nature')}
             name="nature"
             rules={[{ required: true, message: getLocaleDesc('p_input') }]}
           >
             <Select style={{ width: 120 }} options={natureList} />
-          </Form.Item>
-          <Form.Item
+          </Form.Item>}
+          {type !== 'word' &&  <Form.Item
             label={getLocaleDesc('remark')}
             name="name"
 
           >
             <Input />
-          </Form.Item>
+          </Form.Item>}
+
+          {type === 'word' &&  <Form.Item
+            label={getLocaleDesc('word_index')}
+            name="nature"
+            rules={[{ required: true, message: getLocaleDesc('p_input') }]}
+          >
+            <Input />
+          </Form.Item>}
+
           {
             type === 'stat' && (
               <Form.Item

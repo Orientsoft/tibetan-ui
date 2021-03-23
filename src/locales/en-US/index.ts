@@ -138,5 +138,8 @@ export default{
     word_search: 'Word search',
     
     word_error:'Document non conformance',
-    please_view_doc:'Please check the original'
+    please_view_doc:'Please check the original',
+    
+    tab_calc_all:'Word frequency statistics summary',
+    calc_all:'Summary',
   }
