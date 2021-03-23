@@ -1,0 +1,24 @@
+{
+  "proxy": {
+    "/api": {
+      "enable": true,
+      "target": "http://192.168.0.61:5555"
+    }
+  },
+  "plugins": [
+    [
+      "build-plugin-antd",
+      {
+        "themeConfig": {}
+      }
+    ],
+    [
+      "build-plugin-moment-locales",
+      {
+        "locales": [
+          "zh-cn"
+        ]
+      }
+    ]
+  ]
+}

@@ -1,0 +1,197 @@
+// 载入默认全局样式 normalize
+
+html{background-color: #fff;}
+
+body {
+  -webkit-text-size-adjust: none;
+  font-family: Microsoft Himalaya;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-stretch: normal;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+#ice-container, .containerwh {
+  height: 100%;
+  width: 100%;
+  // padding-top: 30px;
+  overflow: hidden;
+  position: relative;
+}
+.homeheight{
+  // height: calc(100vh - 60px);
+  height: 100vh;
+  overflow-y: auto;
+  position: absolute;
+   width: 100%;
+}
+
+.topheader{
+  -webkit-box-shadow: 0 2px 8px #1a38548c;
+  box-shadow: 0 2px 8px #1a38548c;
+  opacity: .9;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 111;
+  // background-color: #00303c;
+  background-color: #00000066;
+  .navbar-brand{margin-right: .5rem !important;}
+ .ant-menu {
+  background-color: #00303c;
+  border-bottom: 1px solid #00303c;
+}
+.navbar {
+  padding: 0 !important;
+  .nav-item a{  margin: 0 2px !important;
+        padding: 5px 15px 5px !important;
+        font-size: 16px;
+        color: #fff !important;
+        height: 68px;
+        line-height: 60px;
+        overflow: hidden;
+        display: block;}
+
+    .nav-item a:hover{
+      color: #1a38548c;
+      border-bottom: 3px solid #1257c5b1 ;
+      background-color: #1257c5b1;
+    }
+    .nav-item.active a{
+      color: #1a38548c;
+      border-bottom: 3px solid #1256c5 ;
+      background-color: #1256c5;
+    }
+  }
+  .ant-dropdown-trigger{   color: #fff !important;}
+.navbar-toggler{
+   color: #fff !important;
+   font-size: 20px;
+   padding-bottom: 8px;
+}
+
+
+
+
+
+  // .ant-menu-horizontal>.ant-menu-item a:hover{color: #fff;}
+  // .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item:hover, .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu:hover, .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item-active, .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu-active,.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item-open, .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu-open, .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item-selected,.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu-selected {
+  //   color: #1a38548c;
+  //   border-bottom: 3px solid #1256c5 ;
+  //   background-color: #1256c5;
+  // }
+  // .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item, .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu {
+  //   margin: 0 10px !important;
+  //   padding: 5px 20px 5px !important;
+  //   font-size: 16px;
+  // }
+  // .ant-menu-horizontal > .ant-menu-item-selected a{ color: #fff !important;}
+  // .loginwp{ padding-top:14px; text-align: center; min-width: 100px;position: absolute;right: 0;}
+  // .ant-menu-horizontal > .ant-menu-item, .ant-menu-horizontal > .ant-menu-submenu{ border-bottom: 3px solid transparent ;}
+
+}
+.contentwp{
+  height: 100%;
+  background-color: #f8f8f9;
+ .ant-layout-sider {
+  background-color: #f8f8f9;
+  width: 256px !important;
+    flex: 0 0 256px !important;
+    max-width: 256px !important;
+    min-width: 256px !important;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 70px;
+    .ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left{    border-right: 0 solid #f0f0f0;}
+    .ant-menu{background-color: transparent;
+      .ant-menu-item{ border-radius: 20px; margin: 12px 0;    line-height: 45px;}
+      .ant-menu-item-selected,.ant-menu-item-active{background-color: #00303cbf;color: #fff; }
+    .ant-menu-item::after {border-right: 3px solid transparent;}
+    }
+}
+.ant-layout-content{ background-color: #fff; border-left: 1px solid #f0f0f0;  padding-bottom: 40px; margin-top: 70px;}
+}
+
+
+
+
+.detailModal{
+  width: 90% !important;
+  overflow: hidden;
+}
+.detailModal .ant-modal-footer{ display: none !important;}
+
+.detailModal .ant-modal-body{ padding:0 10px !important;
+  overflow-y: auto;
+  width: 100%;
+   height: calc(100vh - 200px);
+
+}
+
+.detailModal .ant-modal-body .ant-col-16{    -webkit-flex: 0 0 100%;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;}
+.scroll-window{
+    position: relative;
+    height: 200px;
+    width: 100px;
+    background-color: #333;
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 2px;
+    box-shadow: 2px 2px 2.5px rgba(0,0,0,0.5);
+}
+.scrollbar-area{
+    width: 10px;
+    height: 95%;
+    background-color: rgba(255,255,255,0.25);
+    border-radius: 3.5px;
+    margin: 5% 0;
+    overflow: hidden;
+    position: absolute;
+    right: 3%;
+}
+.scroll{
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 25%;
+    background-color: #eee;
+    border-radius: 3.5px;
+}
+.maincont .ant-divider{border-top: none !important}
+
+em {
+  color: red;
+}
+.em-normal{
+  background-color: yellow;
+}
+
+.em-active{
+  background-color: red;
+}
+.row{display:flex;margin: 0 10px;}
+.c1{ flex-shrink:1;flex:1;text-align:right;overflow:hidden;white-space: nowrap; direction: rtl;text-overflow: ellipsis;}
+.c2{
+  color: red; margin: 0 10px;
+}
+.c3{ flex-shrink:1;flex:1;text-align:left;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;}
+
+.context-item{
+  white-space: normal;
+}
+
+.ant-pagination-total-text {
+  display: inline-block;
+  height: 32px;
+  margin-right: 8px;
+  line-height: 38px !important;
+  vertical-align: middle;
+}
+.home-table .ant-table-cell {
+  padding: 6px 16px;
+}
