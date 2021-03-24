@@ -20,14 +20,14 @@ const showMenus = [
     value:3,
     label: getLocaleDesc('tab_find'),
   },
-  // {
-  //   value:4,
-  //   label: getLocaleDesc('tab_split'),
-  // },
-  // {
-  //   value:5,
-  //   label: getLocaleDesc('tab_sort'),
-  // }
+  {
+    value:4,
+    label: getLocaleDesc('tab_split'),
+  },
+  {
+    value:5,
+    label: getLocaleDesc('tab_sort'),
+  }
 ];
 const tailLayout = {
   wrapperCol: { offset: 4, span: 20 },

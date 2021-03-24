@@ -74,14 +74,31 @@ export default function FileManage() {
         return <AddTags uid={record.id} type='split' tags={value} onChange={onTagsChange} />
       }
     },
-    // {
-    //   title: getLocaleDesc('file_check'),
-    //   dataIndex: 'is_check',
-    //   key: 'is_check',
-    //   render: (value,record,index) => {
-    //     return  <a href='#' onClick={(e)=>doCheck(e,record)} > {value ? getLocaleDesc('yes'): getLocaleDesc('no')}</a>
-    //   },
-    // },
+    {
+      title: getLocaleDesc('auto_split'),
+      dataIndex: 'tokenize_status',
+      key: 'tokenize_status',
+      render:(value)=>{
+        if(!value){
+          return getLocaleDesc('no')
+        }
+        if(value === '0'){
+          return getLocaleDesc('stat_1')
+        }
+        if(value === '1'){
+          return getLocaleDesc('stat_2')
+        }
+        return getLocaleDesc('stat_3')
+      }
+    },
+    {
+      title: getLocaleDesc('file_check'),
+      dataIndex: 'is_check',
+      key: 'is_check',
+      render: (value,record,index) => {
+        return  <a href='#' onClick={(e)=>doCheck(e,record)} > {value ? getLocaleDesc('yes'): getLocaleDesc('no')}</a>
+      },
+    },
   ];
 
   const onTagsChange = (tags,id)=>{
@@ -132,11 +149,26 @@ export default function FileManage() {
     })
   }
 
+  // 批量分词
+  const doAuto = () =>{
+    setLoading(true)
+    request({
+      url:'/file/tokenize',
+      method:'post',
+      data:{file_ids:selCheckFiles.map(v=>v.id), is_async:true}
+    }).then(res=>{
+      message.success(getLocaleDesc(res.msg))
+      setLoading(false)
+      // 重新获取内容
+      getMyFiles()
+    })
+  }
+
   // 批量校验
   const onCheck = async () => {
     console.log(selCheckFiles)
 
-    const tmp = selCheckFiles.filter(item=>item.is_check===false)
+    const tmp = selCheckFiles.filter(item=>item.is_check===false && item.parsed !== null)
     if(tmp.length > 0){
       setLoading2(true)
       /* eslint-disable no-await-in-loop */
@@ -233,13 +265,6 @@ export default function FileManage() {
     })
   }
 
-  const doDel = () => {
-    request({url:'/file',method:'delete',params:{file_id:selFiles}}).then((res)=>{
-      // console.log(res)
-      getMyFiles()
-      onCancel()
-    })
-  };
 
   const onEdit = (record)=>{
     window.open(`#/edit?id=${record.id}`,'_blank')
@@ -309,7 +334,7 @@ export default function FileManage() {
                   />
                 </Form.Item>
                 <Form.Item>
-                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<ProfileOutlined />} >{getLocaleDesc('auto_split')}</Button>
+                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={doAuto} icon={<ProfileOutlined />} >{getLocaleDesc('auto_split')}</Button>
                 </Form.Item>
                 <Form.Item>
                   <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
@@ -318,7 +343,7 @@ export default function FileManage() {
                   <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<CloudTwoTone />} >{getLocaleDesc('export_new')}</Button>
                 </Form.Item>
                 <Form.Item>
-                  <Button loading={loading2} onClick={onCheck} icon={<CloudDownloadOutlined />} >{getLocaleDesc('export_all')}</Button>
+                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<CloudDownloadOutlined />} >{getLocaleDesc('export_all')}</Button>
                 </Form.Item>
               </Form>
             </Col>
@@ -343,7 +368,6 @@ export default function FileManage() {
         desc={getLocaleDesc('file_delete_info')}
         visible={v}
         onCancel={onCancel}
-        onConfirm={doDel}
       />
     </>
   );

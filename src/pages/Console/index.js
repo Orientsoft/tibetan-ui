@@ -23,10 +23,9 @@ export default function Console() {
             <Menu.Item key="k2">
               {getLocaleDesc('console_tab_existword')}
             </Menu.Item>
-            {/*<Menu.Item key="k3">
+            <Menu.Item key="k3">
               {getLocaleDesc('console_tab_word_index')}
             </Menu.Item>
-            */}
             <Menu.Item key="k4">
               {getLocaleDesc('console_tab_user')}
             </Menu.Item>

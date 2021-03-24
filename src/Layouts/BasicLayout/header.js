@@ -145,7 +145,12 @@ export default function Header() {
                 {hasFind()&&<li className={getActive('kfind')} key="kfind" onClick={handleClick('kfind')}>
                   <Link to="/find" onClick={onAuthCheck}>{getLocaleDesc('tab_find')}</Link>
                 </li>}
-                
+                {hasSplit()&&<li className={getActive('ksplit')} key="ksplit" onClick={handleClick('ksplit')}>
+                  <Link to="/split" onClick={onAuthCheck}>{getLocaleDesc('tab_split')}</Link>
+                </li>}
+                {hasSort()&&<li className={getActive('ksort')} key="ksort" onClick={handleClick('ksort')}>
+                  <Link to="/sort" onClick={onAuthCheck}>{getLocaleDesc('tab_sort')}</Link>
+                </li>}
                 <li className={getActive('khistory')} key="khistory" onClick={handleClick('khistory')}>
                   <Link to="/history" onClick={onAuthCheck}>{getLocaleDesc('tab_history')}</Link>
                 </li>
@@ -162,12 +167,7 @@ export default function Header() {
           </nav>
         </div>
         {/* 
-        {hasSplit()&&<li className={getActive('ksplit')} key="ksplit" onClick={handleClick('ksplit')}>
-          <Link to="/split" onClick={onAuthCheck}>{getLocaleDesc('tab_split')}</Link>
-        </li>}
-        {hasSort()&&<li className={getActive('ksort')} key="ksort" onClick={handleClick('ksort')}>
-          <Link to="/sort" onClick={onAuthCheck}>{getLocaleDesc('tab_sort')}</Link>
-        </li>}
+        
         <Menu className="" onClick={handleClick} selectedKeys={[current]} mode="horizontal">
           <Menu.Item className="hidden-xs" key="khome">
             <Link to="/">{getLocaleDesc('tab_home')}</Link>

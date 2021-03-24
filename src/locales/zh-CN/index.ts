@@ -109,7 +109,7 @@ export default{
   author:'作者',
   version:'版本',
   tags:'标签',
-  file_check:'校对',
+  file_check:'校对完成',
   tags_error:'请输入标签',
   calc_delete_info:'确定删除记录吗',
   find_delete_info:'确定删除新词发现记录吗？此操作会删除对应的发现的新词',
@@ -121,7 +121,7 @@ export default{
   edit_pwd: '修改密码',
   old_pwd: '旧密码',
   charnum: '请输入字母，数字或字母数字组合',
-  auto_split: '分词参考',
+  auto_split: '辅助分词',
   next:'下一个',
   prev:'上一个',
   button_clear:'清空',
@@ -150,4 +150,7 @@ export default{
   word_word:'字',
   export_new:'导出新词',
   export_all:'导出全部',
+  edit_origin:'查看原文',
+  copy_btn:'复制',
+  sort_btn:'排序'
 }

@@ -1,344 +1,122 @@
 import React, { useState, useEffect } from 'react';
 import { request } from 'ice';
 import moment from 'moment';
-// import { Table, Space, message, Typography } from "antd";
 import {
   Row,
   Col,
-  Menu,
   Button,
   Input,
   Upload,
   Form,
   Divider,
   Switch,
-  Tooltip,
-  Checkbox,
-  Tree,
   Layout,
-  Table, Space, message, Typography
+  message
 } from 'antd';
-import { DownOutlined, FormOutlined, DeleteOutlined, FolderOutlined, FolderOpenOutlined, FireOutlined } from '@ant-design/icons';
-import { useAntdTable } from 'ahooks';
-import Uploadbutton from '@/components/UploadFileButton';
+import Uploadbutton from '@/components/UploadButton';
 import UploadMultibutton from '@/components/UploadMultiFileButton';
 import Confirm from '@/components/Confirm';
 import { getLocaleDesc } from '@/utils/common';
-import AddTags from '../Files/addTags';
 
 const { Sider, Content } = Layout;
-const { DirectoryTree } = Tree;
 
 export default function FileManage() {
-  const { Title, Text, Paragraph } = Typography;
   const [tData, setTData] = useState([])
   const [loading, setLoading] = useState(false)
-  const [loading2, setLoading2] = useState(false)
 
   const [form] = Form.useForm();
-  const doSearch = (value) =>{
-    // getHistory(value)
-    const t = value ? value.trim(): '';
-    getMyFiles(t)
+
+  const doExport= ()=>{
+
   }
-  const baseClumn = [
-    {
-      title: getLocaleDesc('file_search'),
-      dataIndex: 'file_name',
-      key: 'file_name',
-    },
-    {
-      title: getLocaleDesc('book_name'),
-      dataIndex: 'book_name',
-      key: 'book_name',
-    },
-    {
-      title: getLocaleDesc('author'),
-      dataIndex: 'author',
-      key: 'author',
-    },
-    {
-      title: getLocaleDesc('version'),
-      dataIndex: 'version',
-      key: 'version',
-    },
-    {
-      title: getLocaleDesc('tags'),
-      dataIndex: 'tags',
-      key: 'tags',
-      width: '200px',
-      render:(value,record,index) => {
-        return <AddTags uid={record.id} type='split' tags={value} onChange={onTagsChange} />
+
+  function copyToClipboard(txt) {
+    console.log(txt)
+    if (window.clipboardData) {
+      window.clipboardData.clearData();
+      window.clipboardData.setData('Text', txt);
+      message.success('复制成功！');
+    } else if (navigator.userAgent.indexOf('Opera') !== -1) {
+      window.location = txt;
+    } else if (window.netscape) {
+      try {
+        window.netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+      } catch (e) {
+        alert('被浏览器拒绝！\n请在浏览器地址栏输入\'about:config\'并回车\n然后将 \'signed.applets.codebase_principal_support\'设置为\'true\'');
       }
-    },
-    // {
-    //   title: getLocaleDesc('file_check'),
-    //   dataIndex: 'is_check',
-    //   key: 'is_check',
-    //   render: (value,record,index) => {
-    //     return  <a href='#' onClick={(e)=>doCheck(e,record)} > {value ? getLocaleDesc('yes'): getLocaleDesc('no')}</a>
-    //   },
-    // },
-  ];
-
-  const onTagsChange = (tags,id)=>{
-    request({url:'/file',method:'patch',data:{file_id:id,tags}}).then(res=>{
-      // console.log(res)
-      message.success(getLocaleDesc(res.msg));
-
-      const newData = [...tData];
-      const index = newData.findIndex(item => item.id === id);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          tags
-        });
-        setTData(newData);
-      }
-    })
-  }
-
-
-  const doCheck = (e,r)=>{
-    // console.log(r)
-    if(e){
-      e.preventDefault()
+      const clip = window.Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(window.Components.interfaces.nsIClipboard);
+      if (!clip)
+        return;
+      const trans = window.Components.classes['@mozilla.org/widget/transferable;1'].createInstance(window.Components.interfaces.nsITransferable);
+      if (!trans)
+        return;
+      trans.addDataFlavor('text/unicode');
+      let str = {};
+      const len = {};
+      str = window.Components.classes['@mozilla.org/supports-string;1'].createInstance(window.Components.interfaces.nsISupportsString);
+      const copytext = txt;
+      str.data = copytext;
+      trans.setTransferData('text/unicode', str, copytext.length * 2);
+      const clipid = window.Components.interfaces.nsIClipboard;
+      console.log(clip,clipid)
+      if (!clipid)
+        return false;
+      clip.setData(trans, null, clipid.kGlobalClipboard);
+      message.success('复制成功！');
     }
-    doCheck2(r)
   }
 
-  function doCheck2(r,cb){
-    return request({url:'/file',method:'patch',data:{file_id:r.id,is_check:!r.is_check}}).then(res=>{
-      // console.log(res)
-      message.success(getLocaleDesc(res.msg));
-      if(cb){
-        cb()
-      }else{
-        const newData = [...tData];
-        const index = newData.findIndex(item => item.id === r.id);
-        if (index > -1) {
-          const item = newData[index];
-          newData.splice(index, 1, {
-            ...item,
-            is_check: !item.is_check
-          });
-          setTData(newData);
-        }
-      }
-    })
+  const doCopy= ()=>{
+    copyToClipboard('124')
   }
-
-  // 批量校验
-  const onCheck = async () => {
-    console.log(selCheckFiles)
-
-    const tmp = selCheckFiles.filter(item=>item.is_check===false)
-    if(tmp.length > 0){
-      setLoading2(true)
-      /* eslint-disable no-await-in-loop */
-      for(let i=0 ; i< tmp.length; i++){
-        const item = tmp[i]
-        if(i=== tmp.length-1){
-          await doCheck2(item,()=>{
-            setSelCheckFiles([])
-            setLoading2(false)
-          })
-        }else{
-          await doCheck2(item,()=>{
-
-          })
-        }
-      }
-    }
-    getMyFiles()
-  }
-
-  // 目录
-  const [treeData, setTreeData] = useState([
-
-  ])
-
-  // 选择文件名或目录
-  const [selData, setSelData] = useState([])
-  // 选择删除文件
-  const [selFiles, setSelFiles] = useState([])
-  // 选择校对文件
-  const [selCheckFiles, setSelCheckFiles] = useState([])
-  // 展开目录
-  const [expandedKeys, setExpandedKeys] = useState([])
-
-  const onExpand = (expandedKeys)=>{
-    setExpandedKeys(expandedKeys)
-  }
-  // 提示弹窗
-  const [v, sv] = useState(false);
-  const onDel = (r) => {
-    setSelFiles(r.id)
-    sv(true);
-  };
-  const onCancel = () => {
-    sv(false);
-  };
-
-  const onSelect = (selectedKeys, info) => {
-    // console.log('selected', selectedKeys,info);
-    if(selData.length>0 && selData[0] === selectedKeys[0]){
-      return
-    }
-    setSelData(selectedKeys)
-  };
-
-  const columns = [
-    ...baseClumn,
-  ];
-
-  const getMyFiles = (search) =>{
-    setLoading(false)
-    const path = selData.length>0 ?selData[0] :''
-    request({url:'/content/file',method:'post',data:{origin:'private',path:path.substring(5),search}}).then((res)=>{
-      // console.log(res)
-      setTData(res.data)
-      setLoading(true)
-    })
-  }
-
-  const decodeTree = (title,kt,value)=>{
-    const node = {
-      title,
-      key: kt
-    }
-    const children = []
-    for(const key in value){
-      const child = decodeTree(key,`${kt}/${key}`,value[key])
-      children.push(child)
-    }
-    if(children.length>0)
-      node.children = children
-    return node;
-  }
-
-  const getMyTree = () =>{
-    request({url:'/tree',params:{origin:'private'}}).then((res)=>{
-      if(!isActive){
-        return
-      }
-      const root = decodeTree(getLocaleDesc('directory'),'root',res)
-      // console.log(root)
-      setTreeData([root])
-      setExpandedKeys(['root'])
-    })
-  }
-
-  const doDel = () => {
-    request({url:'/file',method:'delete',params:{file_id:selFiles}}).then((res)=>{
-      // console.log(res)
-      getMyFiles()
-      onCancel()
-    })
-  };
-
-  const onEdit = (record)=>{
-    window.open(`#/edit?id=${record.id}`,'__blank')
-  }
-
-  let isActive= true
-  useEffect(()=>{
-    isActive= true
-    getMyTree()
-    return ()=>{
-      isActive = false
-    }
-  },[])
-
-  useEffect(()=>{
-    // console.log('dir',selData)
-    getMyFiles()
-  },[selData])
-
-
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      // console.log(selectedRowKeys,selectedRows)
-      setSelCheckFiles(selectedRows)
-    },
-    selectedRowKeys:[...selCheckFiles.map(v=>v.id)]
-  };
 
   return (
     <>
-
       <Row className="content  ">
-        <Col  className="cpleft">
-          <div className="leftbox">
-            <div className="leftfiles">
-              <Row className="lefttopmyfile leftpt50">
-                <Col >
-                  <FolderOutlined className="iconleft" /> {getLocaleDesc('file_list_title')}
-                </Col>
-              </Row>
-              <div className="leftlist">
-                <DirectoryTree
-                  defaultExpandedKeys={['root']}
-                  onSelect={onSelect}
-                  treeData={treeData}
-                  selectedKeys={selData}
-                  expandedKeys={expandedKeys}
-                  onExpand={onExpand}
-
-                />
-              </div>
-            </div>
-          </div>
-        </Col>
-        <Col  className="cpright">
+        <Col span="12" className="cpleft" >
           <Row className="mainborderfont">
             <Col span={24}>
-              {/* {type === 'stat' && <Col><Checkbox onChange={onChange}>排除名单</Checkbox></Col>} */}
-              <Form form={form} layout="inline" size='large'  className="fl">
-                <Form.Item name="search">
-                  <Input.Search
-                    allowClear
-                    enterButton
-                    placeholder={getLocaleDesc('file_search')}
-                    style={{ width: 340 }}
-                    onSearch={doSearch}
+              <Form layout="inline" size='large'  className="fl">
+                <Form.Item>
+                  <Uploadbutton
+                    className="upploadleft"
+                    size='large'
+                    url="/api/word/stat/dict/batch"
+                    data={{  }}
+                    onSuccess={() => {
+                      // search.reset();
+                    }}
                   />
                 </Form.Item>
                 <Form.Item>
-                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
+                  <Button type='primary' onClick={doExport}>{getLocaleDesc('sort_btn')}</Button>
                 </Form.Item>
-                <Form.Item>
-                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
-                </Form.Item>
-                {/* <Form.Item>
-                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
-                </Form.Item> */}
               </Form>
             </Col>
           </Row>
           <Row className="mainborderfont">
-            <Col span={24} className="pb-20  ">
-              <Table
-                rowSelection={{
-                  type: 'checkbox',
-                  ...rowSelection,
-                }}
-                columns={columns}
-                dataSource={tData}
-                rowKey="id" />
+            <Input.TextArea />
+          </Row>
+        </Col>
+        <Col span="12" className="cpright" >
+          <Row className="mainborderfont">
+            <Col span={24}>
+              <Form layout="inline" size='large'  className="fl">
+                <Form.Item>
+                  <Button type='primary' onClick={doExport}>{getLocaleDesc('export')}</Button>
+                </Form.Item>
+                <Form.Item>
+                  <Button type='primary' onClick={doCopy}>{getLocaleDesc('copy_btn')}</Button>
+                </Form.Item>
+              </Form>
             </Col>
+          </Row>
+          <Row className="mainborderfont">
+            <Input.TextArea />
           </Row>
         </Col>
       </Row>
 
-      <Confirm
-        title={getLocaleDesc('file_delete_title')}
-        desc={getLocaleDesc('file_delete_info')}
-        visible={v}
-        onCancel={onCancel}
-        onConfirm={doDel}
-      />
     </>
   );
 }

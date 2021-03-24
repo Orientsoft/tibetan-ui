@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {  Button, Spin, message, Pagination } from 'antd';
 import { request, getSearchParams } from 'ice';
-import EditorJS from '@editorjs/editorjs';
 import FontsizeInput from '@/components/FontsizeInput'
 import { getLocaleDesc} from '@/utils/common';
 
@@ -14,11 +13,9 @@ export default function Edit(props) {
   const [fileName, setFileName] = useState('')
   const [loading, setLoading] = useState(false)
   const [fontSize, setFontSize] = useState(24)
-  const editor = useRef()
   const params = getSearchParams()
   const fileId = params.id
   const seqId = params.seq
-  const isView = (params.type==='view')
   const searchKey = params.search
 
   const [pageInfo, setPageInfo] = useState({

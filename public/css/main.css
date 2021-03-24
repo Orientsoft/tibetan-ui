@@ -694,7 +694,7 @@ a.dl_button:hover, a.dl_button:focus {
 
 .savebtn {
   float: right;
-  margin-left: 40px;
+  margin-left: 20px;
 }
 
 .tag-div {
@@ -1004,4 +1004,15 @@ button.ant-btn {
   margin-right: 8px;
   margin-bottom: 5px;
   margin-left: 0px !important;
+}
+
+textarea.ant-input {
+  max-width: 100%;
+  height: auto;
+  min-height: 500px !important;
+  /* min-height: 32px; */
+  line-height: 1.5715;
+  vertical-align: bottom;
+  -webkit-transition: all 0.3s, height 0s;
+  transition: all 0.3s, height 0s;
 }
