@@ -67,7 +67,7 @@ export default function Edit(props) {
     request({
       url:'/file/tokenize',
       method:'post',
-      params:{file_id:[fileId]}
+      data:{file_ids:[fileId]}
     }).then(res=>{
       setLoading(false)
       // 重新获取内容
@@ -163,31 +163,28 @@ export default function Edit(props) {
 
   }
 
-  const doExport = (values,onCancel)=>{
-    console.log(values)
-    request({url:'/work/result/export',method:'post',
-      data:{...values},
-      responseType: 'arraybuffer'}).then(res=>{
-      // console.log(res)
-      message.success(getLocaleDesc('success'));
+  const doExport= (type)=>{
+    setLoading(true)
+    request({
+      url:'/file/tokenize/export',
+      method:'post',
+      data:{ids:[fileId],type},
+    }).then((res)=>{
       const tmp = new Blob([res]);
       const reader = new FileReader();
       reader.onload = function (evt) {
         const a = document.createElement('a');
         //   a.download = `${title}代码及排名.zip`;
-        a.download = `export-count-${formatTime(new Date())}.txt`;
+        a.download = `export-${formatTime(new Date())}.txt`;
         a.href = evt.target.result;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
       };
       reader.readAsDataURL(tmp);
-      onCancel && onCancel()
+      message.success(getLocaleDesc('success'))
+      setLoading(false)
     })
-      .catch((e) => {
-        console.log(e);
-        message.error(getLocaleDesc('failed'));
-      });
 
   }
 
@@ -196,17 +193,20 @@ export default function Edit(props) {
     <div className="editbox">
       <Spin spinning={loading} >
         <div className="topedit">
-          <div className="topeditwidth">
+          <div className="topeditwidth" style={{paddingBottom:'30px'}}>
             <span className="topfontbtn">&nbsp;<b>{fileName}</b></span>
+            <FontsizeInput onChange={setFontSize} />
+          </div>
+          <div className="topeditwidth">
             <Button onClick={()=>doSave()} type="primary" className="savebtn">{getLocaleDesc('file_edit_save_button')}</Button>
             <Button onClick={()=>getContent(true)} type="primary" className="savebtn">{getLocaleDesc('edit_origin')}</Button>
             <Button onClick={()=>doSave(true)} type="primary" className="savebtn">{getLocaleDesc('file_check')}</Button>
             <Button onClick={doAuto} type="primary" className="savebtn">{getLocaleDesc('auto_split')}</Button>
-            <Button loading={loading} type="primary" className="savebtn" onClick={doExport}>{getLocaleDesc('export_new')}</Button>
-            <Button loading={loading} type="primary" className="savebtn" onClick={doExport}>{getLocaleDesc('export_all')}</Button>
-            <FontsizeInput onChange={setFontSize} />
+            <Button loading={loading} type="primary" className="savebtn" onClick={()=>doExport('new')}>{getLocaleDesc('export_new')}</Button>
+            <Button loading={loading} type="primary" className="savebtn" onClick={()=>doExport('all')}>{getLocaleDesc('export_all')}</Button>
           </div>
           <Pagination simple defaultCurrent={1} pageSize={1} total={pageInfo.total} current={pageInfo.current} onChange={onChange} />
+
         </div>
         <div id={fileId} className="editContent" style={{fontSize:`${fontSize}px`}} />
       </Spin>

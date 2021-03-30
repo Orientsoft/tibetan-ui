@@ -23,7 +23,7 @@ import { useAntdTable } from 'ahooks';
 import Uploadbutton from '@/components/UploadFileButton';
 import UploadMultibutton from '@/components/UploadMultiFileButton';
 import Confirm from '@/components/Confirm';
-import { getLocaleDesc } from '@/utils/common';
+import { getLocaleDesc, formatTime } from '@/utils/common';
 import AddTags from '../Files/addTags';
 
 const { Sider, Content } = Layout;
@@ -285,6 +285,31 @@ export default function FileManage() {
   },[selData])
 
 
+  const doExport= (type)=>{
+    setLoading2(true)
+    request({
+      url:'/file/tokenize/export',
+      method:'post',
+      data:{ids:selCheckFiles.map(v=>(v.id)),type},
+    }).then((res)=>{
+      const tmp = new Blob([res]);
+      const reader = new FileReader();
+      reader.onload = function (evt) {
+        const a = document.createElement('a');
+        //   a.download = `${title}代码及排名.zip`;
+        a.download = `export-${formatTime(new Date())}.txt`;
+        a.href = evt.target.result;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+      reader.readAsDataURL(tmp);
+      message.success(getLocaleDesc('success'))
+      setLoading2(false)
+    })
+
+  }
+
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       // console.log(selectedRowKeys,selectedRows)
@@ -340,10 +365,10 @@ export default function FileManage() {
                   <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
                 </Form.Item>
                 <Form.Item>
-                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<CloudTwoTone />} >{getLocaleDesc('export_new')}</Button>
+                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={()=>doExport('new')} icon={<CloudTwoTone />} >{getLocaleDesc('export_new')}</Button>
                 </Form.Item>
                 <Form.Item>
-                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<CloudDownloadOutlined />} >{getLocaleDesc('export_all')}</Button>
+                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={()=>doExport('all')} icon={<CloudDownloadOutlined />} >{getLocaleDesc('export_all')}</Button>
                 </Form.Item>
               </Form>
             </Col>

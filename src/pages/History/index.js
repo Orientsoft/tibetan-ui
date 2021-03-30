@@ -8,6 +8,7 @@ import CalcModal from './calcModel'
 import FindModal from './findModel'
 import MyResult from './myResult'
 import CalcAll from '../Work/calcwordsall/index.js'
+import FindAll from '../Work/findwordsall/index.js'
 
 const { Content } = Layout;
 const { TabPane } = Tabs;
@@ -197,6 +198,9 @@ export default function History() {
                 </TabPane>
                 <TabPane tab={getLocaleDesc('tab_calc_all')} key="k4">
                   <CalcAll />
+                </TabPane>
+                <TabPane tab={getLocaleDesc('tab_find_all')} key="k5">
+                  <FindAll />
                 </TabPane>
               </Tabs>
 

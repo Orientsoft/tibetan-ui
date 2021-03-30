@@ -152,5 +152,6 @@ export default{
   export_all:'导出全部',
   edit_origin:'查看原文',
   copy_btn:'复制',
-  sort_btn:'排序'
+  sort_btn:'排序',
+  tab_find_all:'新词发现汇总',
 }

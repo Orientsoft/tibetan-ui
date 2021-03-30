@@ -19,7 +19,7 @@ export default function File() {
     // console.log(value)
     // const ids = value.map((v)=>v.id)
     setLoading(true)
-    request({url:'/file/path/work_id',method:'post',data:{...value}}).then((res)=>{
+    request({url:'/file/path/work_id',method:'post',data:{type:'stat',...value}}).then((res)=>{
       console.log(res)
       setCData(res.data)
       setTimeout(()=>{
