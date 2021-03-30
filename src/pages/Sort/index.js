@@ -13,7 +13,6 @@ import {
   Layout,
   message
 } from 'antd';
-import ClipboardJS from 'clipboard'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Uploadbutton from '@/components/UploadButton';
 import UploadMultibutton from '@/components/UploadMultiFileButton';
