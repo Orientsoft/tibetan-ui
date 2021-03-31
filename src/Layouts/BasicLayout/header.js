@@ -51,10 +51,10 @@ export default function Header() {
       case '#/files':
         setCurrent('kfiles');
         break;
-      case '#/ksplit':
+      case '#/split':
         setCurrent('ksplit');
         break;
-      case '#/ksort':
+      case '#/sort':
         setCurrent('ksort');
         break
       default:
