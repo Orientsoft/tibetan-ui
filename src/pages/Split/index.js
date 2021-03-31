@@ -16,9 +16,10 @@ import {
   Checkbox,
   Tree,
   Layout,
+  Select,
   Table, Space, message, Typography
 } from 'antd';
-import { FormOutlined, ProfileOutlined, FolderOutlined, CloudDownloadOutlined,CloudTwoTone, FireOutlined } from '@ant-design/icons';
+import { FormOutlined, ProfileOutlined, FolderOutlined, FolderOpenOutlined, CloudDownloadOutlined,CloudTwoTone, FireOutlined } from '@ant-design/icons';
 import { useAntdTable } from 'ahooks';
 import Uploadbutton from '@/components/UploadFileButton';
 import UploadMultibutton from '@/components/UploadMultiFileButton';
@@ -28,6 +29,7 @@ import AddTags from '../Files/addTags';
 
 const { Sider, Content } = Layout;
 const { DirectoryTree } = Tree;
+const { Option} = Select
 
 export default function FileManage() {
   const { Title, Text, Paragraph } = Typography;
@@ -202,6 +204,7 @@ export default function FileManage() {
   const [selCheckFiles, setSelCheckFiles] = useState([])
   // 展开目录
   const [expandedKeys, setExpandedKeys] = useState([])
+  const [treeType, setTreeType] = useState('private')
 
   const onExpand = (expandedKeys)=>{
     setExpandedKeys(expandedKeys)
@@ -231,7 +234,7 @@ export default function FileManage() {
   const getMyFiles = (search) =>{
     setLoading(false)
     const path = selData.length>0 ?selData[0] :''
-    request({url:'/content/file',method:'post',data:{origin:'private',path:path.substring(5),search}}).then((res)=>{
+    request({url:'/content/file',method:'post',data:{origin:treeType,path:path.substring(5),search}}).then((res)=>{
       // console.log(res)
       setTData(res.data)
       setLoading(true)
@@ -254,7 +257,7 @@ export default function FileManage() {
   }
 
   const getMyTree = () =>{
-    request({url:'/tree',params:{origin:'private'}}).then((res)=>{
+    request({url:'/tree',params:{origin:treeType}}).then((res)=>{
       if(!isActive){
         return
       }
@@ -262,6 +265,7 @@ export default function FileManage() {
       // console.log(root)
       setTreeData([root])
       setExpandedKeys(['root'])
+      setSelData(['root'])
     })
   }
 
@@ -270,14 +274,16 @@ export default function FileManage() {
     window.open(`#/edit?id=${record.id}`,'_blank')
   }
 
-  let isActive= true
+  let isActive = true
   useEffect(()=>{
-    isActive= true
+    // setLoadedKeys([])
+    setExpandedKeys([])
     getMyTree()
+    isActive = true
     return ()=>{
       isActive = false
     }
-  },[])
+  },[treeType])
 
   useEffect(()=>{
     // console.log('dir',selData)
@@ -318,6 +324,11 @@ export default function FileManage() {
     selectedRowKeys:[...selCheckFiles.map(v=>v.id)]
   };
 
+  const handleSelectChange = (value)=>{
+    console.log(value)
+    setTreeType(value)
+  }
+
   return (
     <>
 
@@ -327,7 +338,10 @@ export default function FileManage() {
             <div className="leftfiles">
               <Row className="lefttopmyfile leftpt50">
                 <Col >
-                  <FolderOutlined className="iconleft" /> {getLocaleDesc('file_list_title')}
+                  <Select defaultValue="private" onChange={handleSelectChange}>
+                    <Option value="private"><FolderOutlined className="iconleft" />{getLocaleDesc('file_list_title')}</Option>
+                    <Option value="share"><FolderOpenOutlined className="iconleft" />{getLocaleDesc('share_file_list_title')}</Option>
+                  </Select>
                 </Col>
               </Row>
               <div className="leftlist">
@@ -365,10 +379,10 @@ export default function FileManage() {
                   <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
                 </Form.Item>
                 <Form.Item>
-                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={()=>doExport('new')} icon={<CloudTwoTone />} >{getLocaleDesc('export_new')}</Button>
+                  <Button disabled={selCheckFiles.length===0 || selCheckFiles.filter(v=>v.is_check===false).length!==0} loading={loading2} onClick={()=>doExport('new')} icon={<CloudTwoTone />} >{getLocaleDesc('export_new')}</Button>
                 </Form.Item>
                 <Form.Item>
-                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={()=>doExport('all')} icon={<CloudDownloadOutlined />} >{getLocaleDesc('export_all')}</Button>
+                  <Button disabled={selCheckFiles.length===0 || selCheckFiles.filter(v=>v.is_check===false).length!==0} loading={loading2} onClick={()=>doExport('all')} icon={<CloudDownloadOutlined />} >{getLocaleDesc('export_all')}</Button>
                 </Form.Item>
               </Form>
             </Col>

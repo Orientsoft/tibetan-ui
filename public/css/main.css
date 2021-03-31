@@ -1027,3 +1027,16 @@ button.ant-btn {
   -webkit-transition: all 0.3s, height 0s;
   transition: all 0.3s, height 0s;
 }
+
+.file-checked{
+  height: 12px;
+  width: 20px;
+  background-color: #52c41a;
+  display: inline-block;
+}
+.file-unchecked{
+  height: 12px;
+  width: 20px;
+  background-color: #ff982a;
+  display: inline-block;
+}

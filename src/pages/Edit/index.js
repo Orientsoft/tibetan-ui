@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {  Button, Spin, message, Pagination } from 'antd';
+import {  Button, Spin, message, Pagination, Tooltip } from 'antd';
 import { request, getSearchParams } from 'ice';
 import EditorJS from '@editorjs/editorjs';
 import { FormOutlined, ProfileOutlined, FolderOutlined, CloudDownloadOutlined,CloudTwoTone, FireOutlined } from '@ant-design/icons';
@@ -11,6 +11,7 @@ export default function Edit(props) {
   const [contents, setContents] = useState([])
   const [fileName, setFileName] = useState('')
   const [loading, setLoading] = useState(false)
+  const [isCheck, setIsCheck] = useState(false)
   const [fontSize, setFontSize] = useState(24)
   const editor = useRef()
   const params = getSearchParams()
@@ -76,7 +77,7 @@ export default function Edit(props) {
   }
 
   // 保存到服务器
-  const doSave = (isCheck=false)=>{
+  const doSave = (checked=false)=>{
     setLoading(true)
     editor.current.save().then((outputData) => {
 
@@ -90,8 +91,11 @@ export default function Edit(props) {
       request({
         url:'/file',
         method:'PATCH',
-        data:{file_id:fileId,content: tmpContents.map(v=>v.text).join(''),is_check: isCheck}
+        data:{file_id:fileId,content: tmpContents.map(v=>v.text).join(''),is_check: checked || isCheck}
       }).then(res=>{
+        if(!isCheck){
+          setIsCheck(checked || isCheck)
+        }
         setLoading(false)
         message.success(getLocaleDesc(res.msg),1.5);
       })
@@ -127,6 +131,7 @@ export default function Edit(props) {
       params:{file_id:fileId,is_origin}
     }).then(res=>{
       setFileName(res.file_name)
+      setIsCheck(res.is_check)
       setLoading(false)
       const content = res.content
       const tshowContent = []
@@ -170,6 +175,8 @@ export default function Edit(props) {
       method:'post',
       data:{ids:[fileId],type},
     }).then((res)=>{
+      console.log(res)
+      // return
       const tmp = new Blob([res]);
       const reader = new FileReader();
       reader.onload = function (evt) {
@@ -184,6 +191,8 @@ export default function Edit(props) {
       reader.readAsDataURL(tmp);
       message.success(getLocaleDesc('success'))
       setLoading(false)
+    }).catch(e=>{
+      setLoading(false)
     })
 
   }
@@ -194,7 +203,13 @@ export default function Edit(props) {
       <Spin spinning={loading} >
         <div className="topedit">
           <div className="topeditwidth" style={{paddingBottom:'30px'}}>
-            <span className="topfontbtn">&nbsp;<b>{fileName}</b></span>
+            <span className="topfontbtn">&nbsp;<b>{fileName}</b> &nbsp;&nbsp;
+              {isCheck?
+                <Tooltip title={`${getLocaleDesc('check')}:${getLocaleDesc('yes')}`} color='#52c41a' ><div className='file-checked' /></Tooltip>
+                :
+                <Tooltip title={`${getLocaleDesc('check')}:${getLocaleDesc('no')}`} color="#ff982a"><div className='file-unchecked' /></Tooltip>
+              }
+            </span>
             <FontsizeInput onChange={setFontSize} />
           </div>
           <div className="topeditwidth">
@@ -202,8 +217,8 @@ export default function Edit(props) {
             <Button onClick={()=>getContent(true)} type="primary" className="savebtn">{getLocaleDesc('edit_origin')}</Button>
             <Button onClick={()=>doSave(true)} type="primary" className="savebtn">{getLocaleDesc('file_check')}</Button>
             <Button onClick={doAuto} type="primary" className="savebtn">{getLocaleDesc('auto_split')}</Button>
-            <Button loading={loading} type="primary" className="savebtn" onClick={()=>doExport('new')}>{getLocaleDesc('export_new')}</Button>
-            <Button loading={loading} type="primary" className="savebtn" onClick={()=>doExport('all')}>{getLocaleDesc('export_all')}</Button>
+            <Button disabled={!isCheck} loading={loading} type="primary" className="savebtn" onClick={()=>doExport('new')}>{getLocaleDesc('export_new')}</Button>
+            <Button disabled={!isCheck} loading={loading} type="primary" className="savebtn" onClick={()=>doExport('all')}>{getLocaleDesc('export_all')}</Button>
           </div>
           <Pagination simple defaultCurrent={1} pageSize={1} total={pageInfo.total} current={pageInfo.current} onChange={onChange} />
 
