@@ -5,7 +5,7 @@ export default{
     button_add:'Add',
     button_exit:'Exit',
     button_concel:'Cancel',
-    button_modify:'Modify',
+    button_modify:'Edit',
     button_view:'View',
 
     login:'Log In',
@@ -142,4 +142,16 @@ export default{
     
     tab_calc_all:'Word frequency statistics summary',
     calc_all:'Summary',
+    
+    tab_split:'Auxiliary participle',
+    tab_sort:'Tibetan Sort',
+    console_tab_word_index:'Tibetan index library management',
+    word_index:'Index',
+    word_word:'Word',
+    export_new:'Export new words',
+    export_all:'Export all words',
+    edit_origin:'View original text',
+    copy_btn:'Copy',
+    sort_btn:'Sort',
+    tab_find_all:'New word discovery summary',
   }
