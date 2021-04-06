@@ -14,6 +14,7 @@ import {
   message
 } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { CopyOutlined, CloudDownloadOutlined, SortAscendingOutlined  } from '@ant-design/icons';
 import Uploadbutton from '@/components/UploadButton';
 import UploadMultibutton from '@/components/UploadMultiFileButton';
 import Confirm from '@/components/Confirm';
@@ -74,7 +75,10 @@ export default function FileManage() {
         <Col span="12" className="cpleft" >
           <Row className="mainborderfont">
             <Col span={24}>
-              <Form layout="inline" size='large'  className="fl">
+              <div className="fl sorptit">
+                请填写原文件
+                </div>
+              <Form layout="inline" size='large'  className="fr">
                 <Form.Item>
                   <Uploadbutton
                     className="upploadleft"
@@ -89,7 +93,7 @@ export default function FileManage() {
                   />
                 </Form.Item>
                 <Form.Item>
-                  <Button type='primary' loading={loading} onClick={doSort}>{getLocaleDesc('sort_btn')}</Button>
+                  <Button type='primary' danger loading={loading} onClick={doSort}><SortAscendingOutlined /> {getLocaleDesc('sort_btn')}</Button>
                 </Form.Item>
               </Form>
             </Col>
@@ -101,14 +105,17 @@ export default function FileManage() {
         <Col span="12" className="cpright" >
           <Row className="mainborderfont">
             <Col span={24}>
-              <Form layout="inline" size='large'  className="fl">
+              <div  className="fl sorptit">
+                排序结果
+                </div>
+              <Form layout="inline" size='large'  className="fr">
                 <Form.Item>
-                  <Button type='primary' onClick={doExport}>{getLocaleDesc('export')}</Button>
+                  <Button type='primary' onClick={doExport}><CloudDownloadOutlined /> {getLocaleDesc('export')}</Button>
                 </Form.Item>
                 <Form.Item>
                   <CopyToClipboard text={sortValue}
                   	          onCopy={() => message.success('复制成功~')}>
-                    <Button id='copy' type='primary'>{getLocaleDesc('copy_btn')}</Button>
+                    <Button id='copy' type='primary' danger><CopyOutlined /> {getLocaleDesc('copy_btn')}</Button>
                   </CopyToClipboard>
                 </Form.Item>
               </Form>
@@ -118,6 +125,7 @@ export default function FileManage() {
             <Input.TextArea value={sortValue} onChange={onChange}/>
           </Row>
           <div className="fail mainborderfont">
+            <div className="failtit">排序失败</div>
             <Input.TextArea value={unSortValue} />
           </div>
         </Col>

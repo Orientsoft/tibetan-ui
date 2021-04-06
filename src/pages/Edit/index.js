@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import {  Button, Spin, message, Pagination, Tooltip } from 'antd';
 import { request, getSearchParams } from 'ice';
 import EditorJS from '@editorjs/editorjs';
-import { FormOutlined, ProfileOutlined, FolderOutlined, CloudDownloadOutlined,CloudTwoTone, FireOutlined } from '@ant-design/icons';
+import { FormOutlined, ProfileOutlined, FolderOutlined, CarryOutOutlined, ContainerOutlined, RetweetOutlined, CloudDownloadOutlined, SaveOutlined, CloudTwoTone, FireOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
 import FontsizeInput from '@/components/FontsizeInput'
 import { getLocaleDesc, formatTime} from '@/utils/common';
 
@@ -202,25 +202,26 @@ export default function Edit(props) {
     <div className="editbox">
       <Spin spinning={loading} >
         <div className="topedit">
-          <div className="topeditwidth" style={{paddingBottom:'30px'}}>
+          <div className="topeditwidth" >
             <span className="topfontbtn">&nbsp;<b>{fileName}</b> &nbsp;&nbsp;
               {isCheck?
-                <Tooltip title={`${getLocaleDesc('check')}:${getLocaleDesc('yes')}`} color='#52c41a' ><div className='file-checked' /></Tooltip>
+                <Tooltip title={`${getLocaleDesc('check')}:${getLocaleDesc('yes')}`} color='#52c41a' ><span className='file-checked' >已校验</span></Tooltip>
                 :
-                <Tooltip title={`${getLocaleDesc('check')}:${getLocaleDesc('no')}`} color="#ff982a"><div className='file-unchecked' /></Tooltip>
+                <Tooltip title={`${getLocaleDesc('check')}:${getLocaleDesc('no')}`} color="#ff982a"><span className='file-unchecked' >未校验</span></Tooltip>
               }
             </span>
             <FontsizeInput onChange={setFontSize} />
           </div>
           <div className="topeditwidth">
-            <Button onClick={()=>doSave()} type="primary" className="savebtn">{getLocaleDesc('file_edit_save_button')}</Button>
-            <Button onClick={()=>getContent(true)} type="primary" className="savebtn">{getLocaleDesc('edit_origin')}</Button>
-            <Button onClick={()=>doSave(true)} type="primary" className="savebtn">{getLocaleDesc('file_check')}</Button>
-            <Button onClick={doAuto} type="primary" className="savebtn">{getLocaleDesc('auto_split')}</Button>
-            <Button disabled={!isCheck} loading={loading} type="primary" className="savebtn" onClick={()=>doExport('new')}>{getLocaleDesc('export_new')}</Button>
-            <Button disabled={!isCheck} loading={loading} type="primary" className="savebtn" onClick={()=>doExport('all')}>{getLocaleDesc('export_all')}</Button>
+            <Pagination simple defaultCurrent={1} pageSize={1} total={pageInfo.total} current={pageInfo.current} onChange={onChange} className="pagetop" />
+            <Button onClick={() => doSave()} type="primary" className="savebtn" ><SaveOutlined /> {getLocaleDesc('file_edit_save_button')}</Button>
+            <Button onClick={() => getContent(true)} type="button" className="savebtn"><RetweetOutlined /> {getLocaleDesc('edit_origin')}</Button>
+            <Button onClick={() => doSave(true)} type="button" className="savebtn"><CarryOutOutlined /> {getLocaleDesc('file_check')}</Button>
+            <Button onClick={doAuto} type="button" className="savebtn"><ContainerOutlined /> {getLocaleDesc('auto_split')}</Button>
+            <Button disabled={!isCheck} loading={loading} type="button" className="savebtn" onClick={() => doExport('new')}><VerticalAlignBottomOutlined />{getLocaleDesc('export_new')}</Button>
+            <Button disabled={!isCheck} loading={loading} type="button" className="savebtn" onClick={() => doExport('all')}><CloudDownloadOutlined /> {getLocaleDesc('export_all')}</Button>
           </div>
-          <Pagination simple defaultCurrent={1} pageSize={1} total={pageInfo.total} current={pageInfo.current} onChange={onChange} />
+          
 
         </div>
         <div id={fileId} className="editContent" style={{fontSize:`${fontSize}px`}} />
