@@ -846,11 +846,11 @@ a.dl_button:hover, a.dl_button:focus {
   margin-top: 8px !important;
 }
 
-.filesbtn {
+/* .filesbtn {
   color: #0f77fc !important;
   background-color: #e1efff !important;
   border-color: #e1efff !important;
-}
+} */
 
 .filebtn {
   color: #ffffff !important;
@@ -1101,13 +1101,13 @@ a.filename:hover {
 }
 
 .ant-btn-dangerous.ant-btn-primary {
-  background: #0f647c !important;
-  border-color: #0f647c !important;
+  background: #18b09c !important;
+  border-color: #18b09c !important;
 }
 
 .ant-btn-dangerous.ant-btn-primary:hover {
-  background: #0f647cd2 !important;
-  border-color: #0f647cd2 !important;
+  background: #149382 !important;
+  border-color: #149382 !important;
 }
 
 .ant-btn-primary {
