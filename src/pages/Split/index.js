@@ -49,7 +49,7 @@ export default function FileManage() {
       dataIndex: 'file_name',
       key: 'file_name',
       render:(value,record)=>{
-        return <span onClick={()=>onEdit(record)}>{value}</span>
+        return <a onClick={(e) => { e.preventDefault(); onEdit(record) }} href="" className="filename">{value}</a>
       }
     },
     {

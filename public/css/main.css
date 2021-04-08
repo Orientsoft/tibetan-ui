@@ -40,6 +40,10 @@ html, body {
   float: left;
 }
 
+.fr {
+  float: right;
+}
+
 .fs16 {
   font-size: 16px !important;
 }
@@ -405,7 +409,7 @@ a.dl_button:hover, a.dl_button:focus {
 .mainborderfont {
   margin: 10px;
   border-radius: 6px;
-  padding: 10px 10px 5px;
+  /* padding: 10px 10px 5px; */
   /* border: solid 1px #eee; */
 }
 
@@ -668,6 +672,14 @@ a.dl_button:hover, a.dl_button:focus {
   max-width: 940px !important;
   width: 940px;
   margin: 10px auto;
+  overflow: hidden;
+}
+
+.pagetop {
+  float: left;
+  font-size: 16px !important;
+  line-height: 1.9715 !important;
+  padding-top: 8px !important;
 }
 
 .editContent .codex-editor__redactor {
@@ -679,7 +691,7 @@ a.dl_button:hover, a.dl_button:focus {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   z-index: 1;
-  margin-top: 100px;
+  margin-top: 120px;
 }
 
 .topfontbtn {
@@ -694,7 +706,7 @@ a.dl_button:hover, a.dl_button:focus {
 
 .savebtn {
   float: right;
-  margin-left: 20px;
+  margin-left: 5px;
 }
 
 .tag-div {
@@ -748,6 +760,10 @@ a.dl_button:hover, a.dl_button:focus {
 
 .ant-tree.ant-tree-directory .ant-tree-treenode .ant-tree-node-content-wrapper.ant-tree-node-selected .infotexttime, .ant-tree .ant-tree-node-content-wrapper span.ant-tree-title .infotext .infotexttime {
   line-height: 15px !important;
+}
+
+.ant-tree.ant-tree-block-node .ant-tree-list-holder-inner .ant-tree-node-content-wrapper {
+  padding-top: 5px;
 }
 
 /* .ant-tree-treenode .ant-tree.ant-tree-directory .anticon {
@@ -821,18 +837,20 @@ a.dl_button:hover, a.dl_button:focus {
 .leftlist .ant-tree-switcher {
   margin-left: 5px !important;
   margin-right: -10px !important;
+  margin-top: 5px;
 }
 
 .leftlist .ant-tree-checkbox {
   margin-left: 6px !important;
-  margin-right: 0px !important;
+  margin-right: -2px !important;
+  margin-top: 8px !important;
 }
 
-.filesbtn {
+/* .filesbtn {
   color: #0f77fc !important;
   background-color: #e1efff !important;
   border-color: #e1efff !important;
-}
+} */
 
 .filebtn {
   color: #ffffff !important;
@@ -898,6 +916,8 @@ a.dl_button:hover, a.dl_button:focus {
 }
 
 .ant-input-search .ant-input-affix-wrapper {
+  height: 40px;
+  line-height: 34px;
   padding: 8px 11px 0;
 }
 
@@ -911,6 +931,12 @@ a.dl_button:hover, a.dl_button:focus {
 
 button.ant-btn {
   padding: 5px 15px 3px;
+  height: 40px;
+  /* line-height: 34px; */
+}
+
+.lefttopmy button.ant-btn {
+  line-height: 100%;
 }
 
 .login-form .ant-btn>span {
@@ -962,6 +988,7 @@ button.ant-btn {
 .searchbox .ant-input-search .ant-input-group .ant-input-affix-wrapper:not(:last-child) {
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
+  height: 55px;
 }
 
 .searchbox .ant-input-group>.ant-input:last-child, .ant-input-group-addon:last-child {
@@ -1000,7 +1027,7 @@ button.ant-btn {
   vertical-align: 3px !important;
 }
 
-.ant-checkbox-wrapper + .ant-checkbox-wrapper {
+.ant-checkbox-wrapper+.ant-checkbox-wrapper {
   margin-right: 8px;
   margin-bottom: 5px;
   margin-left: 0px !important;
@@ -1028,15 +1055,73 @@ button.ant-btn {
   transition: all 0.3s, height 0s;
 }
 
-.file-checked{
-  height: 12px;
-  width: 20px;
+.file-checked {
+  height: 22px;
+  width: 50px;
+  border-radius: 2px;
+  text-align: center;
+  line-height: 30px;
+  color: #fff !important;
   background-color: #52c41a;
   display: inline-block;
 }
-.file-unchecked{
-  height: 12px;
-  width: 20px;
+
+.file-unchecked {
+  height: 22px;
+  width: 50px;
+  border-radius: 2px;
+  text-align: center;
+  line-height: 30px;
+  color: #fff !important;
   background-color: #ff982a;
   display: inline-block;
+}
+
+a.filename {
+  color: #1756c2;
+}
+
+a.filename:hover {
+  color: #17e
+}
+
+.ant-tabs-top .ant-row.content {
+  margin-top: -16px;
+}
+
+.sorptit {
+  padding-top: 14px;
+  font-size: 16px;
+  padding-left: 5px;
+}
+
+.failtit {
+  padding-left: 5px;
+  color: #999;
+}
+
+.ant-btn-dangerous.ant-btn-primary {
+  background: #18b09c !important;
+  border-color: #18b09c !important;
+}
+
+.ant-btn-dangerous.ant-btn-primary:hover {
+  background: #149382 !important;
+  border-color: #149382 !important;
+}
+
+.ant-btn-primary {
+  background: #1256c5 !important;
+  border-color: #1256c5 !important;
+}
+
+.ant-btn-primary:hover {
+  background: #1257c5db !important;
+  border-color: #1257c5db !important;
+}
+
+.ant-btn-primary[disabled], .ant-btn-primary[disabled]:hover, .ant-btn-primary[disabled]:focus, .ant-btn-primary[disabled]:active {
+  color: rgba(0, 0, 0, 0.25) !important;
+  background: #f5f5f5 !important;
+  border-color: #d9d9d9 !important;
 }
