@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Spin,
   Table,Tabs, message, Form, Input, Layout } from 'antd';
-import { request } from 'ice';
+import { request, getSearchParams } from 'ice';
 import { formatTime, getLocaleDesc } from '@/utils/common';
 import Confirm from '@/components/Confirm';
 import CalcModal from './calcModel'
@@ -18,7 +18,15 @@ export default function History() {
   const [loading, setLoading] = useState(false)
   const [selData, setSelData] = useState([])
   const [selRowData, setSelRowData] = useState([])
+  const searchParams = getSearchParams();
   const [form] = Form.useForm();
+
+  useEffect(()=>{
+    console.log(searchParams)
+    if(searchParams.type === 'find'){
+      setCurrent('k2')
+    }
+  },[])
 
   const getHistory = (filename) =>{
     setLoading(true)
@@ -29,11 +37,30 @@ export default function History() {
     })
   }
 
+  const getHistorySplit = (filename) =>{
+    setLoading(true)
+    request({url:'/work/tokenize',method:'get',params:{}}).then((res)=>{
+      console.log(res)
+      setData(res.data.map(v=>({...v,key:v.id})))
+      setLoading(false)
+    })
+  }
+
   const doSearch = (value) =>{
     const t = value ? value.trim(): '';
-    if(t){
-      getHistory(t)
+    switch(current){
+      case 'k1':
+      case 'k2':
+        getHistory(t)
+        break;
+      case 'k6':
+        getHistorySplit(t)
+        break;
+      default:
+        break
     }
+    // if(t){
+    // }
   }
 
   const [v, sv] = useState(false);
@@ -110,10 +137,7 @@ export default function History() {
   };
 
   useEffect(()=>{
-    if(current==='k3'){
-      return
-    }
-    getHistory()
+    doSearch('')
   },[current])
 
   const rowSelection = {
@@ -132,7 +156,7 @@ export default function History() {
         <Row>
           <Col span={24} >
             <Spin spinning={loading} delay={500}>
-              <Tabs defaultActiveKey="1" onChange={handleClick}>
+              <Tabs activeKey={current} onChange={handleClick}>
                 <TabPane tab={getLocaleDesc('tab_calc')} key="k1">
                   <Row>
 
@@ -180,6 +204,32 @@ export default function History() {
                         </Form.Item>
                         <Form.Item>
                           <Button disabled={selData.length===0} onClick={onDel}>{getLocaleDesc('button_delete')}</Button>
+                        </Form.Item>
+                      </Form>
+                    </Col>
+                  </Row>
+                  <Table
+                    rowSelection={{
+                      type: 'checkbox',
+                      ...rowSelection,
+                    }}
+                    columns={columns}
+                    dataSource={data}
+                  />
+                </TabPane>
+                <TabPane tab={getLocaleDesc('auto_split')} key="k6">
+                  <Row>
+                    <Col span={24} className="pb-20  ">
+                      {/* {type === 'stat' && <Col><Checkbox onChange={onChange}>排除名单</Checkbox></Col>} */}
+                      <Form form={form} layout="inline" className="fl">
+                        <Form.Item name="search">
+                          <Input.Search
+                            allowClear
+                            enterButton
+                            placeholder={getLocaleDesc('file_search')}
+                            style={{ width: 340 }}
+                            onSearch={doSearch}
+                          />
                         </Form.Item>
                       </Form>
                     </Col>

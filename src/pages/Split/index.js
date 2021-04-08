@@ -191,6 +191,19 @@ export default function FileManage() {
     getMyFiles()
   }
 
+  const onFind = ()=>{
+    setLoading(true)
+    request({url:'/work',method:'post',data:{file_ids:selCheckFiles.map(v=>v.id),work_type:'new'}}).then((res)=>{
+      console.log(res)
+      // setCData(res.data)
+      // getStatus(res.data.map(v=>(v.work_id)))
+      setTimeout(()=>{
+        window.open('#/history?type=find','_blank')
+      },1000)
+      setLoading(false)
+    })
+  }
+
   // 目录
   const [treeData, setTreeData] = useState([
 
@@ -377,6 +390,9 @@ export default function FileManage() {
                 </Form.Item>
                 <Form.Item>
                   <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
+                </Form.Item>
+                <Form.Item>
+                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onFind} icon={<FireOutlined />} >{getLocaleDesc('tab_find')}</Button>
                 </Form.Item>
                 <Form.Item>
                   <Button disabled={selCheckFiles.length===0 || selCheckFiles.filter(v=>v.is_check===false).length!==0} loading={loading2} onClick={()=>doExport('new')} icon={<CloudTwoTone />} >{getLocaleDesc('export_new')}</Button>
