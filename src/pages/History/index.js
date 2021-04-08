@@ -39,7 +39,7 @@ export default function History() {
 
   const getHistorySplit = (filename) =>{
     setLoading(true)
-    request({url:'/work/tokenize',method:'get',params:{}}).then((res)=>{
+    request({url:'/work/tokenize',method:'get',params:{search:filename}}).then((res)=>{
       console.log(res)
       setData(res.data.map(v=>({...v,key:v.id})))
       setLoading(false)
@@ -129,6 +129,56 @@ export default function History() {
       }
     }
   ];
+
+  const baseClumn = [
+    {
+      title: getLocaleDesc('file_search'),
+      dataIndex: 'file_name',
+      key: 'file_name',
+      render:(value,record)=>{
+        return <a onClick={(e) => { e.preventDefault(); onEdit(record) }} href="" className="filename">{value}</a>
+      }
+    },
+    {
+      title: getLocaleDesc('file_check'),
+      dataIndex: 'is_check',
+      key: 'is_check',
+      render: (value,record,index) => {
+        return  <a href='#' onClick={(e)=>doCheck(e,record)} > {value ? getLocaleDesc('yes'): getLocaleDesc('no')}</a>
+      },
+    },
+  ];
+  const onEdit = (record)=>{
+    window.open(`#/edit?id=${record.id}`,'_blank')
+  }
+  const doCheck = (e,r)=>{
+    // console.log(r)
+    if(e){
+      e.preventDefault()
+    }
+    doCheck2(r)
+  }
+
+  function doCheck2(r,cb){
+    return request({url:'/file',method:'patch',data:{file_id:r.id,is_check:!r.is_check}}).then(res=>{
+      // console.log(res)
+      message.success(getLocaleDesc(res.msg));
+      if(cb){
+        cb()
+      }else{
+        const newData = [...data];
+        const index = newData.findIndex(item => item.id === r.id);
+        if (index > -1) {
+          const item = newData[index];
+          newData.splice(index, 1, {
+            ...item,
+            is_check: !item.is_check
+          });
+          setData(newData);
+        }
+      }
+    })
+  }
 
   const [current, setCurrent] = useState('k1');
   const handleClick = (key) => {
@@ -235,11 +285,11 @@ export default function History() {
                     </Col>
                   </Row>
                   <Table
-                    rowSelection={{
-                      type: 'checkbox',
-                      ...rowSelection,
-                    }}
-                    columns={columns}
+                    // rowSelection={{
+                    //   type: 'radio',
+                    //   ...rowSelection,
+                    // }}
+                    columns={baseClumn}
                     dataSource={data}
                   />
                 </TabPane>

@@ -154,4 +154,9 @@ export default{
   copy_btn:'复制',
   sort_btn:'排序',
   tab_find_all:'新词发现汇总',
+  
+  un_check:'未校验',
+  checked:'已校验',
+  sort_res:'排序结果',
+  sort_fail:'排序失败',
 }

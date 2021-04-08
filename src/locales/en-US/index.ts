@@ -154,4 +154,9 @@ export default{
     copy_btn:'Copy',
     sort_btn:'Sort',
     tab_find_all:'New word discovery summary',
+    
+    un_check:'UnCheck',
+    checked:'Checked',
+    sort_res:'Sort Result',
+    sort_fail:'Sort Failed Result',
   }

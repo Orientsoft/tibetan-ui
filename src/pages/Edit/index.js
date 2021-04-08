@@ -205,9 +205,9 @@ export default function Edit(props) {
           <div className="topeditwidth" >
             <span className="topfontbtn">&nbsp;<b>{fileName}</b> &nbsp;&nbsp;
               {isCheck?
-                <Tooltip title={`${getLocaleDesc('check')}:${getLocaleDesc('yes')}`} color='#52c41a' ><span className='file-checked' >已校验</span></Tooltip>
+                <Tooltip title={`${getLocaleDesc('checked')}`} color='#52c41a' ><span className='file-checked' >{getLocaleDesc('checked')}</span></Tooltip>
                 :
-                <Tooltip title={`${getLocaleDesc('check')}:${getLocaleDesc('no')}`} color="#ff982a"><span className='file-unchecked' >未校验</span></Tooltip>
+                <Tooltip title={`${getLocaleDesc('un_check')}`} color="#ff982a"><span className='file-unchecked' >{getLocaleDesc('un_check')}</span></Tooltip>
               }
             </span>
             <FontsizeInput onChange={setFontSize} />
