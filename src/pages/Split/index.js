@@ -19,7 +19,7 @@ import {
   Select,
   Table, Space, message, Typography
 } from 'antd';
-import { FormOutlined, ProfileOutlined, FolderOutlined, FolderOpenOutlined, CloudDownloadOutlined,CloudTwoTone, FireOutlined } from '@ant-design/icons';
+import { FormOutlined, ProfileOutlined, FolderOutlined, FolderOpenOutlined, CloudDownloadOutlined,CloudTwoTone, FireOutlined, VerticalAlignBottomOutlined, CarryOutOutlined } from '@ant-design/icons';
 import { useAntdTable } from 'ahooks';
 import Uploadbutton from '@/components/UploadFileButton';
 import UploadMultibutton from '@/components/UploadMultiFileButton';
@@ -389,13 +389,13 @@ export default function FileManage() {
                   <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={doAuto} icon={<ProfileOutlined />} >{getLocaleDesc('auto_split')}</Button>
                 </Form.Item>
                 <Form.Item>
-                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
+                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<CarryOutOutlined />} >{getLocaleDesc('file_check')}</Button>
                 </Form.Item>
                 <Form.Item>
                   <Button disabled={selCheckFiles.length===0 || selCheckFiles.filter(v=>v.is_check===false).length!==0} loading={loading2} onClick={onFind} icon={<FireOutlined />} >{getLocaleDesc('tab_find')}</Button>
                 </Form.Item>
                 <Form.Item>
-                  <Button disabled={selCheckFiles.length===0 || selCheckFiles.filter(v=>v.is_check===false).length!==0} loading={loading2} onClick={()=>doExport('new')} icon={<CloudTwoTone />} >{getLocaleDesc('export_new')}</Button>
+                  <Button disabled={selCheckFiles.length===0 || selCheckFiles.filter(v=>v.is_check===false).length!==0} loading={loading2} onClick={()=>doExport('new')} icon={<VerticalAlignBottomOutlined />} >{getLocaleDesc('export_new')}</Button>
                 </Form.Item>
                 <Form.Item>
                   <Button disabled={selCheckFiles.length===0 || selCheckFiles.filter(v=>v.is_check===false).length!==0} loading={loading2} onClick={()=>doExport('all')} icon={<CloudDownloadOutlined />} >{getLocaleDesc('export_all')}</Button>

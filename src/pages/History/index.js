@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Spin,
   Table,Tabs, message, Form, Input, Layout } from 'antd';
-import { FormOutlined, ProfileOutlined, FolderOutlined, FolderOpenOutlined, CloudDownloadOutlined,CloudTwoTone, FireOutlined } from '@ant-design/icons';
+import { FormOutlined, ProfileOutlined, FolderOutlined, CarryOutOutlined, ContainerOutlined, RetweetOutlined, CloudDownloadOutlined, SaveOutlined, CloudTwoTone, FireOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { request, getSearchParams } from 'ice';
 import { formatTime, getLocaleDesc } from '@/utils/common';
 import Confirm from '@/components/Confirm';
@@ -349,13 +349,13 @@ export default function History() {
                           />
                         </Form.Item>
                         <Form.Item>
-                          <Button disabled={selRowData.length===0} loading={loading} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
+                          <Button disabled={selRowData.length===0} loading={loading} onClick={onCheck} icon={<CarryOutOutlined />} >{getLocaleDesc('file_check')}</Button>
                         </Form.Item>
                         <Form.Item>
                           <Button disabled={selRowData.length===0 || selRowData.filter(v=>v.is_check===false).length!==0} loading={loading} onClick={onFind} icon={<FireOutlined />} >{getLocaleDesc('tab_find')}</Button>
                         </Form.Item>
                         <Form.Item>
-                          <Button disabled={selRowData.length===0 || selRowData.filter(v=>v.is_check===false).length!==0} loading={loading} onClick={()=>doExport('new')} icon={<CloudTwoTone />} >{getLocaleDesc('export_new')}</Button>
+                          <Button disabled={selRowData.length===0 || selRowData.filter(v=>v.is_check===false).length!==0} loading={loading} onClick={()=>doExport('new')} icon={<VerticalAlignBottomOutlined />} >{getLocaleDesc('export_new')}</Button>
                         </Form.Item>
                         <Form.Item>
                           <Button disabled={selRowData.length===0 || selRowData.filter(v=>v.is_check===false).length!==0} loading={loading} onClick={()=>doExport('all')} icon={<CloudDownloadOutlined />} >{getLocaleDesc('export_all')}</Button>
