@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Spin,
   Table,Tabs, message, Form, Input, Layout } from 'antd';
+import { FormOutlined, ProfileOutlined, FolderOutlined, FolderOpenOutlined, CloudDownloadOutlined,CloudTwoTone, FireOutlined } from '@ant-design/icons';
 import { request, getSearchParams } from 'ice';
 import { formatTime, getLocaleDesc } from '@/utils/common';
 import Confirm from '@/components/Confirm';
@@ -148,6 +149,47 @@ export default function History() {
       },
     },
   ];
+  // 批量校验
+  const onCheck = async () => {
+    console.log(selRowData)
+
+    const tmp = selRowData.filter(item=>item.is_check===false && item.parsed !== null)
+    if(tmp.length > 0){
+      setLoading(true)
+      /* eslint-disable no-await-in-loop */
+      for(let i=0 ; i< tmp.length; i++){
+        const item = tmp[i]
+        if(i=== tmp.length-1){
+          await doCheck2(item,()=>{
+            setSelData([])
+            setSelRowData([])
+            setLoading(false)
+          })
+        }else{
+          await doCheck2(item,()=>{
+
+          })
+        }
+      }
+    }
+    // getMyFiles()
+    let search = form.getFieldValue('search')
+    doSearch(search)
+  }
+
+  const onFind = ()=>{
+    setLoading(true)
+    request({url:'/work',method:'post',data:{file_ids:selRowData.map(v=>v.id),work_type:'new'}}).then((res)=>{
+      console.log(res)
+      // setCData(res.data)
+      // getStatus(res.data.map(v=>(v.work_id)))
+      setTimeout(()=>{
+        window.open('#/history?type=find','_blank')
+      },1000)
+      setLoading(false)
+    })
+  }
+
   const onEdit = (record)=>{
     window.open(`#/edit?id=${record.id}`,'_blank')
   }
@@ -180,6 +222,31 @@ export default function History() {
     })
   }
 
+  const doExport= (type)=>{
+    setLoading(true)
+    request({
+      url:'/file/tokenize/export',
+      method:'post',
+      data:{ids:selRowData.map(v=>(v.id)),type},
+    }).then((res)=>{
+      const tmp = new Blob([res]);
+      const reader = new FileReader();
+      reader.onload = function (evt) {
+        const a = document.createElement('a');
+        //   a.download = `${title}代码及排名.zip`;
+        a.download = `export-${formatTime(new Date())}.txt`;
+        a.href = evt.target.result;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+      reader.readAsDataURL(tmp);
+      message.success(getLocaleDesc('success'))
+      setLoading(false)
+    })
+
+  }
+
   const [current, setCurrent] = useState('k1');
   const handleClick = (key) => {
     // console.log(key)
@@ -192,7 +259,7 @@ export default function History() {
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      // console.log(selectedRowKeys,selectedRows)
+      console.log(selectedRowKeys,selectedRows)
       setSelData(selectedRowKeys)
       setSelRowData(selectedRows)
     },
@@ -281,14 +348,26 @@ export default function History() {
                             onSearch={doSearch}
                           />
                         </Form.Item>
+                        <Form.Item>
+                          <Button disabled={selRowData.length===0} loading={loading} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
+                        </Form.Item>
+                        <Form.Item>
+                          <Button disabled={selRowData.length===0 || selRowData.filter(v=>v.is_check===false).length!==0} loading={loading} onClick={onFind} icon={<FireOutlined />} >{getLocaleDesc('tab_find')}</Button>
+                        </Form.Item>
+                        <Form.Item>
+                          <Button disabled={selRowData.length===0 || selRowData.filter(v=>v.is_check===false).length!==0} loading={loading} onClick={()=>doExport('new')} icon={<CloudTwoTone />} >{getLocaleDesc('export_new')}</Button>
+                        </Form.Item>
+                        <Form.Item>
+                          <Button disabled={selRowData.length===0 || selRowData.filter(v=>v.is_check===false).length!==0} loading={loading} onClick={()=>doExport('all')} icon={<CloudDownloadOutlined />} >{getLocaleDesc('export_all')}</Button>
+                        </Form.Item>
                       </Form>
                     </Col>
                   </Row>
                   <Table
-                    // rowSelection={{
-                    //   type: 'radio',
-                    //   ...rowSelection,
-                    // }}
+                    rowSelection={{
+                      type: 'checkbox',
+                      ...rowSelection,
+                    }}
                     columns={baseClumn}
                     dataSource={data}
                   />

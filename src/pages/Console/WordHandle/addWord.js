@@ -39,7 +39,7 @@ export default function AddWord({ onAdd, type }) {
           layout="vertical"
         >
           <Form.Item
-            label={getLocaleDesc('word_text')}
+            label={type !== 'word'?getLocaleDesc('word_text'):getLocaleDesc('word_word')}
             name="word"
             rules={[{ required: true, message: getLocaleDesc('p_input') }]}
           >

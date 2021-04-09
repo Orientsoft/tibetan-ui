@@ -392,7 +392,7 @@ export default function FileManage() {
                   <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
                 </Form.Item>
                 <Form.Item>
-                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onFind} icon={<FireOutlined />} >{getLocaleDesc('tab_find')}</Button>
+                  <Button disabled={selCheckFiles.length===0 || selCheckFiles.filter(v=>v.is_check===false).length!==0} loading={loading2} onClick={onFind} icon={<FireOutlined />} >{getLocaleDesc('tab_find')}</Button>
                 </Form.Item>
                 <Form.Item>
                   <Button disabled={selCheckFiles.length===0 || selCheckFiles.filter(v=>v.is_check===false).length!==0} loading={loading2} onClick={()=>doExport('new')} icon={<CloudTwoTone />} >{getLocaleDesc('export_new')}</Button>
