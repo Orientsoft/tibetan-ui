@@ -173,7 +173,7 @@ export default function History() {
       }
     }
     // getMyFiles()
-    let search = form.getFieldValue('search')
+    const search = form.getFieldValue('search')
     doSearch(search)
   }
 
