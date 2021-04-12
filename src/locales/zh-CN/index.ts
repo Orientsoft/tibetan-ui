@@ -159,4 +159,5 @@ export default{
   checked:'已校验',
   sort_res:'排序结果',
   sort_fail:'排序失败',
+  sort_src:'请填写原文件',
 }

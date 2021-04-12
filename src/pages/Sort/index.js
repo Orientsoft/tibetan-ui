@@ -76,8 +76,8 @@ export default function FileManage() {
           <Row className="mainborderfont">
             <Col span={24}>
               <div className="fl sorptit">
-                请填写原文件
-                </div>
+                {getLocaleDesc('sort_src')}
+              </div>
               <Form layout="inline" size='large'  className="fr">
                 <Form.Item>
                   <Uploadbutton
@@ -106,15 +106,15 @@ export default function FileManage() {
           <Row className="mainborderfont">
             <Col span={24}>
               <div  className="fl sorptit">
-                排序结果
-                </div>
+                {getLocaleDesc('sort_res')}
+              </div>
               <Form layout="inline" size='large'  className="fr">
                 <Form.Item>
                   <Button type='primary' onClick={doExport}><CloudDownloadOutlined /> {getLocaleDesc('export')}</Button>
                 </Form.Item>
                 <Form.Item>
                   <CopyToClipboard text={sortValue}
-                  	          onCopy={() => message.success('复制成功~')}>
+                  	          onCopy={() => message.success(getLocaleDesc('success'))}>
                     <Button id='copy' type='primary' danger><CopyOutlined /> {getLocaleDesc('copy_btn')}</Button>
                   </CopyToClipboard>
                 </Form.Item>
@@ -125,7 +125,7 @@ export default function FileManage() {
             <Input.TextArea value={sortValue} onChange={onChange}/>
           </Row>
           <div className="fail mainborderfont">
-            <div className="failtit">排序失败</div>
+            <div className="failtit">{getLocaleDesc('sort_fail')}</div>
             <Input.TextArea value={unSortValue} />
           </div>
         </Col>

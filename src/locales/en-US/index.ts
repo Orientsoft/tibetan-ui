@@ -159,4 +159,5 @@ export default{
     checked:'Checked',
     sort_res:'Sort Result',
     sort_fail:'Sort Failed Result',
+    sort_src:'Please fill in the source file',
   }
