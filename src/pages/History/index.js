@@ -21,13 +21,7 @@ export default function History() {
   const [selRowData, setSelRowData] = useState([])
   const searchParams = getSearchParams();
   const [form] = Form.useForm();
-
-  useEffect(()=>{
-    console.log(searchParams)
-    if(searchParams.type === 'find'){
-      setCurrent('k2')
-    }
-  },[])
+  const defaultCurrent = searchParams.type === 'find'?'k2':'k1'
 
   const getHistory = (filename) =>{
     setLoading(true)
@@ -60,8 +54,6 @@ export default function History() {
       default:
         break
     }
-    // if(t){
-    // }
   }
 
   const [v, sv] = useState(false);
@@ -247,13 +239,14 @@ export default function History() {
 
   }
 
-  const [current, setCurrent] = useState('k1');
+  const [current, setCurrent] = useState(defaultCurrent);
   const handleClick = (key) => {
     // console.log(key)
     setCurrent(key);
   };
 
   useEffect(()=>{
+    console.log('current',current)
     doSearch('')
   },[current])
 
