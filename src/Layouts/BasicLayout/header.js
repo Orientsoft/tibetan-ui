@@ -125,7 +125,7 @@ export default function Header() {
         <div className="col-12 ">
           {/* <Col span={21}> */}
           <nav className="navbar navbar-expand-lg ">
-            <a onClick={onHome} className="navbar-brand" href="#"><img src="images/logo-ico.png" width="60" alt="" /><img src="images/logo.png" className="mr-10" alt="" /></a>
+            <a onClick={onHome} className="navbar-brand" href="#"><img src="images/logo-ico.png" width="60" alt="" /><img style={{display:'none'}} src="images/logo.png" className="mr-10" alt="" /></a>
             {/* <div className="fl "><img src="images/logo-ico.jpg" width="60" alt="" /><img src="images/logo.jpg" className="mr-10" alt="" /></div> */}
             {/* <div className="logo" /> */}
             <button onClick={onCollapse} id="clo-target" className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -166,8 +166,8 @@ export default function Header() {
             </div>
           </nav>
         </div>
-        {/* 
-        
+        {/*
+
         <Menu className="" onClick={handleClick} selectedKeys={[current]} mode="horizontal">
           <Menu.Item className="hidden-xs" key="khome">
             <Link to="/">{getLocaleDesc('tab_home')}</Link>

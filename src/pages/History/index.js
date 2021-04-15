@@ -133,6 +133,23 @@ export default function History() {
       }
     },
     {
+      title: getLocaleDesc('auto_split'),
+      dataIndex: 'tokenize_status',
+      key: 'tokenize_status',
+      render:(value)=>{
+        if(!value){
+          return getLocaleDesc('no')
+        }
+        if(value === '0'){
+          return getLocaleDesc('stat_1')
+        }
+        if(value === '1'){
+          return getLocaleDesc('stat_2')
+        }
+        return getLocaleDesc('stat_3')
+      }
+    },
+    {
       title: getLocaleDesc('file_check'),
       dataIndex: 'is_check',
       key: 'is_check',
