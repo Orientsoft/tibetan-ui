@@ -182,7 +182,7 @@ export default function Edit(props) {
       <Spin spinning={loading} >
         <div className="topedit">
           <div className="topeditwidth">
-            <span className="topfontbtn">&nbsp;<b>{fileName}</b></span>
+            <span className="topfontbtn"><b>{fileName}</b></span>
             <Button onClick={previous}>{getLocaleDesc('prev')}</Button>
             <Button onClick={next}>{getLocaleDesc('next')}</Button>
             <span id='showIndex' />

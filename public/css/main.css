@@ -697,9 +697,22 @@ a.dl_button:hover, a.dl_button:focus {
 .topfontbtn {
   float: left;
   padding-top: 5px;
+  width: 740px;
+}
+
+.topfontbtn b {
+  float: left;
+  display: inline-block;
+  height: 27px;
+  line-height: 27px;
+  overflow: hidden;
+  width: 80%;
+  text-align: left;
 }
 
 .topfontbtn span {
+  float: left;
+  margin-right: 5px;
   color: #999;
   font-size: 12px;
 }

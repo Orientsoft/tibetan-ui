@@ -203,12 +203,13 @@ export default function Edit(props) {
       <Spin spinning={loading} >
         <div className="topedit">
           <div className="topeditwidth" >
-            <span className="topfontbtn">&nbsp;<b>{fileName}</b> &nbsp;&nbsp;
-              {isCheck?
+            <span className="topfontbtn">
+              {isCheck ?
                 <Tooltip title={`${getLocaleDesc('checked')}`} color='#52c41a' ><span className='file-checked' >{getLocaleDesc('checked')}</span></Tooltip>
                 :
                 <Tooltip title={`${getLocaleDesc('un_check')}`} color="#ff982a"><span className='file-unchecked' >{getLocaleDesc('un_check')}</span></Tooltip>
               }
+              <Tooltip title={fileName} ><b>{fileName}</b></Tooltip>
             </span>
             <FontsizeInput onChange={setFontSize} />
           </div>
