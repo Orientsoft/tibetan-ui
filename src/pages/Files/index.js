@@ -182,6 +182,13 @@ export default function FileManage() {
     sv(false);
   };
 
+  // 提示弹窗
+  const [v2, sv2] = useState(false);
+  const onDelAll = (r) => {
+    setSelFiles(r.id)
+    sv2(true);
+  };
+
   const onSelect = (selectedKeys, info) => {
     // console.log('selected', selectedKeys,info);
     if(selData.length>0 && selData[0] === selectedKeys[0]){
@@ -247,11 +254,34 @@ export default function FileManage() {
     })
   }
 
-  const doDel = () => {
-    request({url:'/file',method:'delete',params:{file_id:selFiles}}).then((res)=>{
-      // console.log(res)
-      getMyFiles()
-      onCancel()
+  const doDelAll = async ()=>{
+    console.log('doDelAll',selCheckFiles)
+    sv2(false)
+    const tmp = selCheckFiles
+    if(tmp.length > 0){
+      setLoading2(true)
+      /* eslint-disable no-await-in-loop */
+      for(let i=0 ; i< tmp.length; i++){
+        const item = tmp[i]
+        if(i=== tmp.length-1){
+          await doDel(item.id,()=>{
+            getMyFiles()
+            setLoading2(false)
+          })
+        }else{
+          await doDel(item.id,()=>{
+
+          })
+        }
+      }
+    }
+  }
+
+  const doDel = (id,cb) => {
+    request({url:'/file',method:'delete',params:{file_id:id}}).then((res)=>{
+      cb && cb()
+    }).catch(e=>{
+      cb && cb()
     })
   };
 
@@ -328,9 +358,9 @@ export default function FileManage() {
                 <Form.Item>
                   <Uploadbutton url='/api/file' onSuccess={getMyTree} isDir prefix={selData} text={getLocaleDesc('upload_files')}/>
                 </Form.Item>
-                {/* <Form.Item>
-                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onCheck} icon={<FireOutlined />} >{getLocaleDesc('file_check')}</Button>
-                </Form.Item> */}
+                <Form.Item>
+                  <Button disabled={selCheckFiles.length===0} loading={loading2} onClick={onDelAll} icon={<DeleteOutlined />} >{getLocaleDesc('button_delete')}</Button>
+                </Form.Item>
               </Form>
             </Col>
           </Row>
@@ -354,7 +384,18 @@ export default function FileManage() {
         desc={getLocaleDesc('file_delete_info')}
         visible={v}
         onCancel={onCancel}
-        onConfirm={doDel}
+        onConfirm={()=>doDel(selFiles,()=>{
+          getMyFiles()
+          onCancel()
+        })}
+      />
+
+      <Confirm
+        title={getLocaleDesc('file_delete_title')}
+        desc={getLocaleDesc('file_delete_info')}
+        visible={v2}
+        onCancel={()=>sv2(false)}
+        onConfirm={doDelAll}
       />
     </>
   );

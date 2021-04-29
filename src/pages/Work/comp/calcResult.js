@@ -130,9 +130,9 @@ export default function CalcResult(props) {
     if(!data || data.length===0){
       return
     }
-    console.log('init echarts')
+    console.log('init echarts',data)
     let myChart = echarts.init(document.getElementById(id||'main'));
-    const xyData = []
+    const xyData = [0,0,0,0,0,0]
     data.forEach((v)=>{
       if(xyData.length > v.color){
         xyData[v.color] +=  v.total
@@ -171,7 +171,7 @@ export default function CalcResult(props) {
     })
 
     const options = getOption(xData,yData)
-    // console.log(xData, yData,options,myChart)
+    console.log(xyData,xData, yData,options)
     myChart.setOption(options);
     // myChart.current.reload()
     myChart.on('click', onBar );

@@ -167,7 +167,7 @@ export default function FileManage(props) {
   };
 
   const onCheck = (checkedKeys)=>{
-    // console.log(checkedKeys)
+    console.log('onCheck',checkedKeys)
     setCheckedKeys(checkedKeys)
   }
 
@@ -220,6 +220,7 @@ export default function FileManage(props) {
         // setTData(res.data)
         const nchildren = res.data.map(v=>({title:v.file_name,
           key: v.id,
+          disabled: type!=='calc'&& treeType==='share'&&v.last_new==null,// 如果是共享语料库且没有新词发现
           isLeaf:true,
           isDir: false,value:v}))
 
@@ -253,6 +254,14 @@ export default function FileManage(props) {
     setTreeType(value)
   }
 
+  const btnDisable = ()=>{
+    if(type==='calc'){
+      return checkedKeys.filter(v=>v.indexOf('root')===-1).length===0
+    }else{
+      return checkedKeys.filter(v=>v.indexOf('root')===-1).length===0
+    }
+  }
+
   return (
     <>
 
@@ -270,7 +279,7 @@ export default function FileManage(props) {
                 />
               </Form.Item>
             </Form>
-            <Button type='primary' style={{width:'300px',float:'right'}} disabled={checkedKeys.filter(v=>v.indexOf('root')===-1).length===0} onClick={onStart} icon={<CaretRightOutlined />} className="mr-3 ml-3" >{getLocaleDesc('start')}</Button>
+            <Button type='primary' style={{width:'300px',float:'right'}} disabled={btnDisable()} onClick={onStart} icon={<CaretRightOutlined />} className="mr-3 ml-3" >{getLocaleDesc('start')}</Button>
             {/* <Button type='primary' style={{width:'300px',float:'right'}} disabled={type==='calc'? checkedKeys.filter(v=>v.indexOf('root')===-1).length===0 : selData.length === 0} onClick={onStart} icon={<CaretRightOutlined />} className="mr-3 ml-3" >{getLocaleDesc('start')}</Button> */}
           </Row>
           <div className="lefttopmyfileovy">
@@ -278,7 +287,7 @@ export default function FileManage(props) {
               <Col >
                 <Select defaultValue="private" onChange={handleSelectChange}>
                   <Option value="private"><FolderOutlined className="iconleft" />{getLocaleDesc('file_list_title')}</Option>
-                  {type==='calc'&&<Option value="share"><FolderOpenOutlined className="iconleft" />{getLocaleDesc('share_file_list_title')}</Option>}
+                  <Option value="share"><FolderOpenOutlined className="iconleft" />{getLocaleDesc('share_file_list_title')}</Option>
                 </Select>
               </Col>
             </Row>

@@ -92,6 +92,14 @@ export default function FileManage() {
         }
         return getLocaleDesc('stat_3')
       }
+    },// last_new
+    {
+      title: getLocaleDesc('tab_find'),
+      dataIndex: 'last_new',
+      key: 'last_new',
+      render: (value,record,index) => {
+        return  <span> {value || getLocaleDesc('find_status')}</span>
+      },
     },
     {
       title: getLocaleDesc('file_check'),
