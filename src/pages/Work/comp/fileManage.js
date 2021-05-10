@@ -220,7 +220,7 @@ export default function FileManage(props) {
         // setTData(res.data)
         const nchildren = res.data.map(v=>({title:v.file_name,
           key: v.id,
-          disabled: type!=='calc'&& treeType==='share'&&v.last_new==null,// 如果是共享语料库且没有新词发现
+          // disabled: type!=='calc'&& treeType==='share'&&v.last_new==null,// 如果是共享语料库且没有新词发现
           isLeaf:true,
           isDir: false,value:v}))
 
