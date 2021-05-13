@@ -66,7 +66,7 @@ const EditableCell = ({
 
 export default function MyResult(props) {
 
-  const { editable=false } = props
+  const { editable=true } = props
   const [selData, setSelData] = useState([])
   const [rdata, setRData] = useState([]); // 计算结果
   const [pageInfo, setPageInfo] = useState({
@@ -245,11 +245,38 @@ export default function MyResult(props) {
       getResult(pageInfo.current,pageInfo.pageSize)
     })
   }
+
+  // 需要接口
+  const doExport = ()=>{
+    request({url:'/self/dict/export',method:'post',
+      data:{ids:data.map(v=>v.work_id)},
+      responseType: 'arraybuffer'}).then(res=>{
+      // console.log(res)
+      message.success(getLocaleDesc('success'));
+      const tmp = new Blob([res]);
+      const reader = new FileReader();
+      reader.onload = function (evt) {
+        const a = document.createElement('a');
+        //   a.download = `${title}代码及排名.zip`;
+        a.download = `export-${formatTime(new Date())}.txt`;
+        a.href = evt.target.result;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+      reader.readAsDataURL(tmp);
+    })
+      .catch((e) => {
+        console.log(e);
+        message.error(getLocaleDesc('failed'));
+      });
+  }
+
   const doSearch = (value) =>{
     console.log('doSearch',value)
     const t = value ? value.trim(): '';
     getResult(1,pageInfo.pageSize,t)
-    
+
   }
 
   const onChange = (page,pageSize)=>{
@@ -317,17 +344,23 @@ export default function MyResult(props) {
                 onSearch={doSearch}
               />
             </Form.Item>
+            <Form.Item>
+              <Button onClick={doDel} disabled={selData.length<1}>{getLocaleDesc('button_delete')}</Button>
+            </Form.Item>
+            <Form.Item>
+              <Button onClick={doExport} >{getLocaleDesc('export')}</Button>
+            </Form.Item>
           </Form>
-          {false&&<Button onClick={doDel} disabled={selData.length<1}>{getLocaleDesc('button_delete')}</Button>}
+
         </Col>
       </Row>
       <Spin spinning={loading} delay={500}>
         <Form form={form} component={false}>
           <Table
-            // rowSelection={{
-            //   type: 'checkbox',
-            //   ...rowSelection,
-            // }}
+            rowSelection={{
+              type: 'checkbox',
+              ...rowSelection,
+            }}
             components={{
               body: {
                 cell: EditableCell,
