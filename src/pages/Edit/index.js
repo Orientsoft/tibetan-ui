@@ -33,7 +33,7 @@ export default function Edit(props) {
     if(contents.length>0){
       const blocks = []
       const sArrStr = contents[pageInfo.current-1].text.split(' ').map(v=>{
-        if(newWord.findIndex(n=>n===v) > -1){
+        if(newWord.findIndex(n=>n===v || `${n}་` === v || `${n}།` === v) > -1){
           return `<em>${v}</em>`
         }
         return v
