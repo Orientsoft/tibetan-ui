@@ -240,7 +240,7 @@ export default function MyResult(props) {
   }
 
   const doDel = ()=>{
-    request({url:'/self/dict',method:'delete',data:[...selData]}).then(res=>{
+    request({url:'/self/dict/operator',method:'patch',data:{ids:[...selData],operator:'1'}}).then(res=>{
       console.log(res)
       getResult(pageInfo.current,pageInfo.pageSize)
     })
@@ -248,8 +248,8 @@ export default function MyResult(props) {
 
   // 需要接口
   const doExport = ()=>{
-    request({url:'/self/dict/export',method:'post',
-      data:{ids:data.map(v=>v.work_id)},
+    request({url:'/my/self/dict/export',method:'post',
+      data:{},
       responseType: 'arraybuffer'}).then(res=>{
       // console.log(res)
       message.success(getLocaleDesc('success'));
@@ -284,25 +284,6 @@ export default function MyResult(props) {
     getResult(page,pageSize)
   }
 
-  const doCheck = (e,r)=>{
-    console.log(r)
-    e.preventDefault()
-    request({url:'/self/dict',method:'patch',data:{id:r.id,is_check:!r.is_check}}).then(res=>{
-      console.log(res)
-      message.success('修改成功');
-
-      const newData = [...rdata];
-      const index = newData.findIndex(item => item.id === r.id);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          is_check: !item.is_check
-        });
-        setRData(newData);
-      }
-    })
-  }
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       // console.log(selectedRowKeys,selectedRows)
@@ -348,7 +329,7 @@ export default function MyResult(props) {
               <Button onClick={doDel} disabled={selData.length<1}>{getLocaleDesc('button_delete')}</Button>
             </Form.Item>
             <Form.Item>
-              <Button onClick={doExport} >{getLocaleDesc('export')}</Button>
+              <Button onClick={doExport} >{getLocaleDesc('export_all')}</Button>
             </Form.Item>
           </Form>
 
