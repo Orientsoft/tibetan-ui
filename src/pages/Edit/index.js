@@ -9,6 +9,7 @@ import { getLocaleDesc, formatTime} from '@/utils/common';
 export default function Edit(props) {
 
   const [contents, setContents] = useState([])
+  const [newWord, setNewWord] = useState([])
   const [fileName, setFileName] = useState('')
   const [loading, setLoading] = useState(false)
   const [isCheck, setIsCheck] = useState(false)
@@ -28,15 +29,23 @@ export default function Edit(props) {
   },[fileId])
 
   useEffect(()=>{
-    console.log(contents)
+    // console.log(contents)
     if(contents.length>0){
       const blocks = []
+      const sArrStr = contents[pageInfo.current-1].text.split(' ').map(v=>{
+        if(newWord.findIndex(n=>n===v) > -1){
+          return `<em>${v}</em>`
+        }
+        return v
+      }).join(' ')
+      // tmpstr += sArrStr
       blocks.push({
         type : 'paragraph',
         data : {
-          text: contents[pageInfo.current-1].text
+          text: sArrStr
         }
       })
+      console.log(sArrStr)
       // const parr = res.data.split('\r\n')
       // contents.forEach(v=>{
       //   // if(blocks.length < 599)
@@ -81,13 +90,16 @@ export default function Edit(props) {
     setLoading(true)
     editor.current.save().then((outputData) => {
 
-      const txt = outputData.blocks.map(block=> block.data.text).join('')
-      // txt = txt.replace('/&nbsp;/g',' ')
-      console.log('Article data: ', outputData)
+      let txt = outputData.blocks.map(block=> block.data.text).join('')
+      txt = txt.replace(/&nbsp;/g,' ')
+      console.log('Article data: ', txt)
       const tmpContents = [...contents]
       tmpContents[pageInfo.current-1].text = txt;
+
+      // setLoading(false)
       // setContents(tmpContents)
       // setPageInfo({...pageInfo,current:page})
+      // return
       request({
         url:'/file',
         method:'PATCH',
@@ -110,8 +122,8 @@ export default function Edit(props) {
     setLoading(true)
     editor.current.save().then((outputData) => {
 
-      const txt = outputData.blocks.map(block=> block.data.text).join('')
-      // txt = txt.replace('/&nbsp;/g',' ')
+      let txt = outputData.blocks.map(block=> block.data.text).join('')
+      txt = txt.replace(/&nbsp;/g,' ')
       console.log('Article data: ', outputData)
       const tmpContents = [...contents]
       tmpContents[pageInfo.current-1].text = txt;
@@ -135,6 +147,7 @@ export default function Edit(props) {
       setLoading(false)
       const content = res.content
       const tshowContent = []
+      setNewWord(res.new_word)
       let tmpstr = ''
       let len = 0
       // 拼接展示text
@@ -222,7 +235,7 @@ export default function Edit(props) {
             <Button disabled={!isCheck} loading={loading} type="button" className="savebtn" onClick={() => doExport('new')}><VerticalAlignBottomOutlined />{getLocaleDesc('export_new')}</Button>
             <Button disabled={!isCheck} loading={loading} type="button" className="savebtn" onClick={() => doExport('all')}><CloudDownloadOutlined /> {getLocaleDesc('export_all')}</Button>
           </div>
-          
+
 
         </div>
         <div id={fileId} className="editContent" style={{fontSize:`${fontSize}px`}} />
