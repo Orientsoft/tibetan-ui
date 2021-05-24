@@ -10,7 +10,7 @@ const colorCfg = [
   {label:'蓝色',value:'#00f'},
   {label:'天蓝',value:'#09f'},
   {label:'草绿',value:'#080'},
-  {label:'翠绿',value:'#0f0'},
+  {label:'翠绿',value:'#ff982a'},
 ];
 
 const fontdata = [20, 24, 28, 32];
